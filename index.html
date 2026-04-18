@@ -515,49 +515,6 @@
       line-height: 1.5;
     }
 
-    /* ── TESTIMONIAL ─────────────────────────────────── */
-    .testimonial {
-      padding: 160px 0;
-      text-align: center;
-      border-top: 1px solid var(--line);
-    }
-
-    .testimonial blockquote {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(32px, 4.5vw, 56px);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      max-width: 1000px;
-      margin: 0 auto 40px;
-    }
-
-    .testimonial blockquote em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .testimonial blockquote::before {
-      content: '"';
-      display: block;
-      font-size: 96px;
-      color: var(--accent);
-      line-height: 0.5;
-      margin-bottom: 20px;
-    }
-
-    .testimonial-attr {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .testimonial-attr strong {
-      color: var(--ink);
-      font-weight: 500;
-    }
-
     /* ── CONTACT / CTA ───────────────────────────────── */
     .contact {
       border-top: 1px solid var(--line);
@@ -1122,17 +1079,6 @@
 
   <div class="container">
 
-    <!-- TESTIMONIAL -->
-    <section class="testimonial">
-      <blockquote>
-        The best freelancer we've worked with. Shipped on time, communicated clearly, and the site <em>looks better</em>
-        than anything we could have imagined.
-      </blockquote>
-      <div class="testimonial-attr">
-        <strong>Ted Armstrong</strong> &nbsp;/&nbsp; Founder, Candle Co.
-      </div>
-    </section>
-
     <!-- CONTACT -->
     <section class="contact" id="contact">
       <div class="section-label">§ 04 / Get in touch</div>
@@ -1177,7 +1123,6 @@
       <p class="modal-subtitle">The more you share, the better the proposal. I'll respond within 48 hours.</p>
 
       <form id="projectForm">
-        <!-- Web3Forms config: replace YOUR_ACCESS_KEY_HERE with your own key from https://web3forms.com -->
         <input type="hidden" name="access_key" value="07f759e8-571a-4d05-863c-9c6ccdd3c07a">
         <input type="hidden" name="subject" value="New project inquiry via webermarcus.dev">
         <input type="hidden" name="from_name" value="webermarcus.dev inquiry">
