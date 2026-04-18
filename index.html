@@ -1,827 +1,1354 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marcus Weber: Freelance Web Developer</title>
-<meta name="description" content="Freelance web developer building fast, thoughtful websites for independent businesses and ambitious founders.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-  :root {
-    --bg: #F2EDE2;
-    --bg-soft: #E8DFD0;
-    --ink: #1A1814;
-    --ink-soft: #3A3530;
-    --muted: #7C7166;
-    --accent: #B8421C;
-    --accent-soft: #D4663A;
-    --line: #1A181422;
-    --grain-opacity: 0.035;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Manrope', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.55;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  /* Grain texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 100;
-    opacity: var(--grain-opacity);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode: multiply;
-  }
-
-  .serif { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.01em; }
-  .mono { font-family: 'JetBrains Mono', monospace; font-weight: 400; }
-  .italic { font-style: italic; }
-
-  .container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-
-  /* ── NAV ─────────────────────────────────────────── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 24px 32px;
-    z-index: 50;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    mix-blend-mode: multiply;
-  }
-
-  .logo {
-    font-family: 'Instrument Serif', serif;
-    font-size: 24px;
-    font-style: italic;
-    letter-spacing: -0.02em;
-  }
-
-  .logo::before {
-    content: '※ ';
-    color: var(--accent);
-    font-style: normal;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-  }
-
-  .nav-links a {
-    color: var(--ink);
-    text-decoration: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-  }
-
-  .nav-links a:hover { opacity: 1; }
-
-  .nav-cta {
-    display: inline-block;
-    padding: 10px 18px;
-    border: 1px solid var(--ink);
-    border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    text-decoration: none;
-    color: var(--ink);
-    transition: all 0.2s;
-  }
-
-  .nav-cta:hover {
-    background: var(--ink);
-    color: var(--bg);
-  }
-
-  /* ── HERO ────────────────────────────────────────── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 140px 0 80px;
-    position: relative;
-  }
-
-  .hero-meta {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 60px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    animation: fadeUp 0.8s ease-out 0.1s both;
-  }
-
-  .hero-meta .dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    margin-right: 8px;
-    vertical-align: middle;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  h1 {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(56px, 10vw, 168px);
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-    font-weight: 400;
-    margin-bottom: 48px;
-  }
-
-  h1 .line {
-    display: block;
-    overflow: hidden;
-  }
-
-  h1 .line span {
-    display: inline-block;
-    animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  }
-
-  h1 .line:nth-child(1) span { animation-delay: 0.2s; }
-  h1 .line:nth-child(2) span { animation-delay: 0.35s; }
-  h1 .line:nth-child(3) span { animation-delay: 0.5s; }
-
-  @keyframes slideUp {
-    from { transform: translateY(110%); }
-    to { transform: translateY(0); }
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-    position: relative;
-  }
-
-  .hero-bottom {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 60px;
-    align-items: end;
-    animation: fadeUp 0.8s ease-out 0.7s both;
-  }
-
-  .hero-description {
-    max-width: 480px;
-    font-size: 18px;
-    line-height: 1.5;
-    color: var(--ink-soft);
-  }
-
-  .scroll-hint {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    padding: 20px 0;
-  }
-
-  /* ── SECTION HEADERS ─────────────────────────────── */
-  section {
-    padding: 120px 0;
-    position: relative;
-  }
-
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .section-label::before {
-    content: '';
-    width: 24px;
-    height: 1px;
-    background: var(--accent);
-  }
-
-  .section-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(40px, 6vw, 88px);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    margin-bottom: 60px;
-    max-width: 900px;
-  }
-
-  .section-title em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  /* ── SERVICES ────────────────────────────────────── */
-  .services {
-    border-top: 1px solid var(--line);
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--line);
-  }
-
-  .service {
-    padding: 40px 32px 40px 0;
-    border-right: 1px solid var(--line);
-    position: relative;
-  }
-
-  .service:last-child { border-right: none; padding-right: 0; }
-  .service:first-child { padding-left: 0; }
-  .service:nth-child(2) { padding-left: 32px; padding-right: 32px; }
-
-  .service-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    margin-bottom: 24px;
-  }
-
-  .service-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 32px;
-    line-height: 1.1;
-    margin-bottom: 16px;
-  }
-
-  .service-title em { font-style: italic; color: var(--accent); }
-
-  .service-desc {
-    color: var(--ink-soft);
-    margin-bottom: 24px;
-  }
-
-  .service-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    padding: 4px 10px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--ink-soft);
-  }
-
-  /* ── WORK ────────────────────────────────────────── */
-  .work {
-    border-top: 1px solid var(--line);
-  }
-
-  .work-list {
-    border-top: 1px solid var(--line);
-  }
-
-  .work-item {
-    display: grid;
-    grid-template-columns: 80px 1fr 200px 120px;
-    gap: 40px;
-    padding: 32px 0;
-    border-bottom: 1px solid var(--line);
-    align-items: baseline;
-    text-decoration: none;
-    color: var(--ink);
-    transition: padding 0.3s ease, background 0.3s ease;
-    position: relative;
-  }
-
-  .work-item:hover {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
-  .work-item::after {
-    content: '→';
-    position: absolute;
-    right: 24px;
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    font-family: 'Instrument Serif', serif;
-    font-size: 24px;
-    color: var(--accent);
-  }
-
-  .work-item:hover::after {
-    opacity: 1;
-    transform: translateX(8px);
-  }
-
-  .work-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .work-name {
-    font-family: 'Instrument Serif', serif;
-    font-size: 32px;
-    line-height: 1.1;
-  }
-
-  .work-name em { font-style: italic; }
-
-  .work-type {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-soft);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .work-year {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--muted);
-    text-align: right;
-  }
-
-  /* ── PROCESS ─────────────────────────────────────── */
-  .process {
-    background: var(--ink);
-    color: var(--bg);
-    margin: 0 -32px;
-    padding: 120px 32px;
-  }
-
-  .process .section-label { color: var(--accent-soft); }
-  .process .section-label::before { background: var(--accent-soft); }
-
-  .process-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    margin-top: 40px;
-  }
-
-  .process-step {
-    border-top: 1px solid #FFFFFF22;
-    padding-top: 24px;
-  }
-
-  .process-num {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: 48px;
-    color: var(--accent-soft);
-    margin-bottom: 16px;
-    line-height: 1;
-  }
-
-  .process-step h3 {
-    font-family: 'Instrument Serif', serif;
-    font-size: 24px;
-    margin-bottom: 12px;
-    font-weight: 400;
-  }
-
-  .process-step p {
-    font-size: 14px;
-    color: #FFFFFFAA;
-    line-height: 1.5;
-  }
-
-  /* ── TESTIMONIAL ─────────────────────────────────── */
-  .testimonial {
-    padding: 160px 0;
-    text-align: center;
-    border-top: 1px solid var(--line);
-  }
-
-  .testimonial blockquote {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(32px, 4.5vw, 56px);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    max-width: 1000px;
-    margin: 0 auto 40px;
-  }
-
-  .testimonial blockquote em { font-style: italic; color: var(--accent); }
-
-  .testimonial blockquote::before {
-    content: '"';
-    display: block;
-    font-size: 96px;
-    color: var(--accent);
-    line-height: 0.5;
-    margin-bottom: 20px;
-  }
-
-  .testimonial-attr {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .testimonial-attr strong {
-    color: var(--ink);
-    font-weight: 500;
-  }
-
-  /* ── CONTACT / CTA ───────────────────────────────── */
-  .contact {
-    border-top: 1px solid var(--line);
-    padding: 140px 0;
-  }
-
-  .contact-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: end;
-  }
-
-  .contact-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(48px, 7vw, 112px);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-  }
-
-  .contact-title em { font-style: italic; color: var(--accent); }
-
-  .contact-details {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .contact-row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .contact-row .label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .contact-row .value {
-    font-family: 'Instrument Serif', serif;
-    font-size: 24px;
-    color: var(--ink);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .contact-row .value:hover { color: var(--accent); }
-
-  .contact-cta-wrap {
-    margin-top: 32px;
-  }
-
-  .contact-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 20px 32px;
-    background: var(--accent);
-    color: var(--bg);
-    text-decoration: none;
-    border-radius: 999px;
-    font-family: 'Manrope', sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    transition: transform 0.2s, background 0.2s;
-  }
-
-  .contact-cta:hover {
-    transform: translateY(-2px);
-    background: var(--ink);
-  }
-
-  .contact-cta .arrow {
-    transition: transform 0.3s;
-  }
-
-  .contact-cta:hover .arrow {
-    transform: translateX(4px);
-  }
-
-  /* ── FOOTER ──────────────────────────────────────── */
-  footer {
-    border-top: 1px solid var(--line);
-    padding: 40px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  footer .socials {
-    display: flex;
-    gap: 24px;
-  }
-
-  footer a {
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  footer a:hover { color: var(--accent); }
-
-  /* ── RESPONSIVE ──────────────────────────────────── */
-  @media (max-width: 900px) {
-    .container { padding: 0 20px; }
-    nav { padding: 20px; }
-    .nav-links { display: none; }
-
-    .hero-bottom { grid-template-columns: 1fr; gap: 32px; }
-    .scroll-hint { display: none; }
-
-    section { padding: 80px 0; }
-
-    .services-grid { grid-template-columns: 1fr; }
-    .service {
-      border-right: none;
-      border-bottom: 1px solid var(--line);
-      padding: 32px 0 !important;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcus Weber: Freelance Web Developer</title>
+  <meta name="description"
+    content="Freelance web developer building fast, thoughtful websites for independent businesses and ambitious founders.">
+
+  <!-- Favicon: inline SVG monogram. Swap for a proper favicon later (see favicon.io or realfavicongenerator.net) -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231A1814'/%3E%3Ctext x='50' y='74' font-size='70' text-anchor='middle' fill='%23B8421C' font-family='Georgia,serif' font-style='italic'%3EM%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #F2EDE2;
+      --bg-soft: #E8DFD0;
+      --ink: #1A1814;
+      --ink-soft: #3A3530;
+      --muted: #7C7166;
+      --accent: #B8421C;
+      --accent-soft: #D4663A;
+      --line: #1A181422;
+      --grain-opacity: 0.035;
     }
-    .service:last-child { border-bottom: none; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.55;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    .serif {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+    }
+
+    .italic {
+      font-style: italic;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 32px;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: multiply;
+    }
+
+    .logo {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      font-style: italic;
+      letter-spacing: -0.02em;
+    }
+
+    .logo::before {
+      content: '※ ';
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    .nav-cta {
+      display: inline-block;
+      padding: 10px 18px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-decoration: none;
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 0 80px;
+      position: relative;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 60px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      animation: fadeUp 0.8s ease-out 0.1s both;
+    }
+
+    .hero-meta .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(56px, 10vw, 168px);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+      margin-bottom: 48px;
+    }
+
+    h1 .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    h1 .line span {
+      display: inline-block;
+      animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    h1 .line:nth-child(1) span {
+      animation-delay: 0.2s;
+    }
+
+    h1 .line:nth-child(2) span {
+      animation-delay: 0.35s;
+    }
+
+    h1 .line:nth-child(3) span {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(110%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+      position: relative;
+    }
+
+    .hero-bottom {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 60px;
+      align-items: end;
+      animation: fadeUp 0.8s ease-out 0.7s both;
+    }
+
+    .hero-description {
+      max-width: 480px;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--ink-soft);
+    }
+
+    .scroll-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding: 20px 0;
+    }
+
+    /* ── SECTION HEADERS ─────────────────────────────── */
+    section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(40px, 6vw, 88px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 60px;
+      max-width: 900px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ── SERVICES ────────────────────────────────────── */
+    .services {
+      border-top: 1px solid var(--line);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .service {
+      padding: 40px 32px 40px 0;
+      border-right: 1px solid var(--line);
+      position: relative;
+    }
+
+    .service:last-child {
+      border-right: none;
+      padding-right: 0;
+      padding-left: 32px;
+    }
+
+    .service:first-child {
+      padding-left: 0;
+    }
+
+    .service:nth-child(2) {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    .service-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .service-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .service-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .service-desc {
+      color: var(--ink-soft);
+      margin-bottom: 24px;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink-soft);
+    }
+
+    /* ── WORK ────────────────────────────────────────── */
+    .work {
+      border-top: 1px solid var(--line);
+    }
+
+    .work-list {
+      border-top: 1px solid var(--line);
+    }
 
     .work-item {
-      grid-template-columns: 40px 1fr;
+      display: grid;
+      grid-template-columns: 80px 1fr 200px 120px;
+      gap: 40px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+      text-decoration: none;
+      color: var(--ink);
+      transition: padding 0.3s ease, background 0.3s ease;
+      position: relative;
+    }
+
+    .work-item:hover {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .work-item::after {
+      content: '→';
+      position: absolute;
+      right: 24px;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      color: var(--accent);
+    }
+
+    .work-item:hover::after {
+      opacity: 1;
+      transform: translateX(8px);
+    }
+
+    .work-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .work-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .work-name em {
+      font-style: italic;
+    }
+
+    .work-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .work-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* ── PROCESS ─────────────────────────────────────── */
+    .process {
+      background: var(--ink);
+      color: var(--bg);
+      margin: 0 -32px;
+      padding: 120px 32px;
+    }
+
+    .process .section-label {
+      color: var(--accent-soft);
+    }
+
+    .process .section-label::before {
+      background: var(--accent-soft);
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .process-step {
+      border-top: 1px solid #FFFFFF22;
+      padding-top: 24px;
+    }
+
+    .process-num {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 48px;
+      color: var(--accent-soft);
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .process-step h3 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    .process-step p {
+      font-size: 14px;
+      color: #FFFFFFAA;
+      line-height: 1.5;
+    }
+
+    /* ── TESTIMONIAL ─────────────────────────────────── */
+    .testimonial {
+      padding: 160px 0;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    .testimonial blockquote {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 4.5vw, 56px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 1000px;
+      margin: 0 auto 40px;
+    }
+
+    .testimonial blockquote em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .testimonial blockquote::before {
+      content: '"';
+      display: block;
+      font-size: 96px;
+      color: var(--accent);
+      line-height: 0.5;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-attr {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .testimonial-attr strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ── CONTACT / CTA ───────────────────────────────── */
+    .contact {
+      border-top: 1px solid var(--line);
+      padding: 140px 0;
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+    }
+
+    .contact-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 7vw, 112px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+
+    .contact-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .contact-row .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .contact-row .value {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-row .value:hover {
+      color: var(--accent);
+    }
+
+    .contact-cta-wrap {
+      margin-top: 32px;
+    }
+
+    .contact-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 32px;
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      border: none;
+      border-radius: 999px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .contact-cta:hover {
+      transform: translateY(-2px);
+      background: var(--ink);
+    }
+
+    .contact-cta .arrow {
+      transition: transform 0.3s;
+    }
+
+    .contact-cta:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    footer .socials {
+      display: flex;
+      gap: 24px;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--accent);
+    }
+
+    /* ── MODAL (Project inquiry form) ────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 24, 20, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 20px;
+      overflow-y: auto;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal {
+      background: var(--bg);
+      border-radius: 6px;
+      max-width: 640px;
+      width: 100%;
+      padding: 48px;
+      position: relative;
+      transform: translateY(24px);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 40px 80px rgba(26, 24, 20, 0.3);
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+
+    .modal-close:hover {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    .modal .section-label {
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 48px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    .modal-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .modal-subtitle {
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+
+    #projectForm {
+      display: flex;
+      flex-direction: column;
       gap: 20px;
     }
-    .work-type, .work-year { display: none; }
-    .work-name { font-size: 22px; }
 
-    .process { margin: 0 -20px; padding: 80px 20px; }
-    .process-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+    #projectForm label {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    #projectForm .field-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
 
-    footer { flex-direction: column; gap: 16px; text-align: center; }
-  }
+    #projectForm input[type="text"],
+    #projectForm input[type="email"],
+    #projectForm select,
+    #projectForm textarea {
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      border-radius: 4px;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
 
-  @media (max-width: 500px) {
-    .process-grid { grid-template-columns: 1fr; }
-    .hero-meta { flex-direction: column; gap: 8px; }
-  }
-</style>
+    #projectForm input:focus,
+    #projectForm select:focus,
+    #projectForm textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    #projectForm textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    #projectForm select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%237C7166' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 10px;
+      padding-right: 36px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 28px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 999px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .form-submit:hover:not(:disabled) {
+      background: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .form-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 14px 16px;
+      border-radius: 4px;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .form-status.success {
+      display: block;
+      background: rgba(184, 66, 28, 0.08);
+      color: var(--accent);
+      border: 1px solid rgba(184, 66, 28, 0.3);
+    }
+
+    .form-status.error {
+      display: block;
+      background: rgba(26, 24, 20, 0.06);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .honeypot {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      .container {
+        padding: 0 20px;
+      }
+
+      nav {
+        padding: 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-bottom {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .scroll-hint {
+        display: none;
+      }
+
+      section {
+        padding: 80px 0;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+        padding: 32px 0 !important;
+      }
+
+      .service:last-child {
+        border-bottom: none;
+      }
+
+      .work-item {
+        grid-template-columns: 40px 1fr;
+        gap: 20px;
+      }
+
+      .work-type,
+      .work-year {
+        display: none;
+      }
+
+      .work-name {
+        font-size: 22px;
+      }
+
+      .process {
+        margin: 0 -20px;
+        padding: 80px 20px;
+      }
+
+      .process-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .modal {
+        padding: 36px 24px;
+      }
+
+      .modal-title {
+        font-size: 36px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-meta {
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<nav>
-  <div class="logo">Marcus Weber</div>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#work">Work</a></li>
-    <li><a href="#process">Process</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Start a project</a>
-</nav>
+  <nav>
+    <div class="logo">Marcus Weber</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#process">Process</a></li>
+    </ul>
+    <button type="button" class="nav-cta js-open-modal">Start a project</button>
+  </nav>
 
-<div class="container">
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-meta">
-      <span><span class="dot"></span>Available for new projects, 2026</span>
-      <span>Based in Dallas, Texas · Working worldwide</span>
-    </div>
-
-    <h1>
-      <span class="line"><span>Freelance web</span></span>
-      <span class="line"><span>developer building</span></span>
-      <span class="line"><span><em>fast, thoughtful</em> sites.</span></span>
-    </h1>
-
-    <div class="hero-bottom">
-      <p class="hero-description">
-        I design and build modern websites for independent businesses, founders, and creative teams who care about craft. No templates, no bloat. Just code that loads fast and looks considered.
-      </p>
-      <div class="scroll-hint">Scroll ↓</div>
-    </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section class="services" id="services">
-    <div class="section-label">§ 01 / What I build</div>
-    <h2 class="section-title">Small, sharp websites for people with <em>something to say</em>.</h2>
-
-    <div class="services-grid">
-      <div class="service">
-        <div class="service-num">(01)</div>
-        <h3 class="service-title"><em>Marketing</em> sites</h3>
-        <p class="service-desc">Landing pages and multi-page sites that convert. Built for speed, optimized for SEO, designed to feel like yours, not a template.</p>
-        <div class="service-tags">
-          <span class="tag">Next.js</span>
-          <span class="tag">Astro</span>
-          <span class="tag">CMS</span>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-num">(02)</div>
-        <h3 class="service-title"><em>Web</em> applications</h3>
-        <p class="service-desc">Dashboards, portals, internal tools, and SaaS MVPs. Thoughtful interfaces with real engineering behind them: auth, databases, the works.</p>
-        <div class="service-tags">
-          <span class="tag">React</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">Postgres</span>
-        </div>
-      </div>
-
-      <div class="service">
-        <div class="service-num">(03)</div>
-        <h3 class="service-title"><em>E-commerce</em> storefronts</h3>
-        <p class="service-desc">Headless Shopify builds and custom storefronts for brands that have outgrown themes. Fast, flexible, and actually sell things.</p>
-        <div class="service-tags">
-          <span class="tag">Shopify</span>
-          <span class="tag">Stripe</span>
-          <span class="tag">Headless</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WORK -->
-  <section class="work" id="work">
-    <div class="section-label">§ 02 / Selected work</div>
-    <h2 class="section-title">A few things I've <em>recently</em> built.</h2>
-
-    <div class="work-list">
-      <a href="#" class="work-item">
-        <div class="work-num">01</div>
-        <div class="work-name"><em>JMV</em> Fitness and Training</div>
-        <div class="work-type">Work in progress</div>
-        <div class="work-year">2026</div>
-      </a>
-    </div>
-  </section>
-</div>
-
-<!-- PROCESS (full-width dark) -->
-<section class="process" id="process">
   <div class="container">
-    <div class="section-label">§ 03 / How we'll work</div>
-    <h2 class="section-title" style="color: var(--bg);">A process that respects <em style="color: var(--accent-soft);">your time</em> and mine.</h2>
 
-    <div class="process-grid">
-      <div class="process-step">
-        <div class="process-num">i.</div>
-        <h3>Intro call</h3>
-        <p>30 minutes. We talk about what you're building, what success looks like, and whether we're a fit. No pitch deck.</p>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-meta">
+        <span><span class="dot"></span>Available for new projects, 2026</span>
+        <span>Based in Dallas, Texas · Working worldwide</span>
       </div>
-      <div class="process-step">
-        <div class="process-num">ii.</div>
-        <h3>Proposal</h3>
-        <p>Scope, timeline, and fixed price delivered within 48 hours. You'll know exactly what you're paying for.</p>
+
+      <h1>
+        <span class="line"><span>Freelance web</span></span>
+        <span class="line"><span>developer building</span></span>
+        <span class="line"><span><em>fast, thoughtful</em> sites.</span></span>
+      </h1>
+
+      <div class="hero-bottom">
+        <p class="hero-description">
+          I design and build modern websites for independent businesses, founders, and creative teams who care about
+          craft. No templates, no bloat. Just code that loads fast and looks considered.
+        </p>
+        <div class="scroll-hint">Scroll ↓</div>
       </div>
-      <div class="process-step">
-        <div class="process-num">iii.</div>
-        <h3>Build</h3>
-        <p>Async updates, a live staging link from day one, and weekly check-ins. You see everything as it's built.</p>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+      <div class="section-label">§ 01 / What I build</div>
+      <h2 class="section-title">Small, sharp websites for people with <em>something to say</em>.</h2>
+
+      <div class="services-grid">
+        <div class="service">
+          <div class="service-num">(01)</div>
+          <h3 class="service-title"><em>Marketing</em> sites</h3>
+          <p class="service-desc">Landing pages and multi-page sites that convert. Built for speed, optimized for SEO,
+            designed to feel like yours, not a template.</p>
+          <div class="service-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">Astro</span>
+            <span class="tag">CMS</span>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="service-num">(02)</div>
+          <h3 class="service-title"><em>Web</em> applications</h3>
+          <p class="service-desc">Dashboards, portals, internal tools, and SaaS MVPs. Thoughtful interfaces with real
+            engineering behind them: auth, databases, the works.</p>
+          <div class="service-tags">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Postgres</span>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="service-num">(03)</div>
+          <h3 class="service-title"><em>E-commerce</em> storefronts</h3>
+          <p class="service-desc">Headless Shopify builds and custom storefronts for brands that have outgrown themes.
+            Fast, flexible, and actually sell things.</p>
+          <div class="service-tags">
+            <span class="tag">Shopify</span>
+            <span class="tag">Stripe</span>
+            <span class="tag">Headless</span>
+          </div>
+        </div>
       </div>
-      <div class="process-step">
-        <div class="process-num">iv.</div>
-        <h3>Launch</h3>
-        <p>Deployment, handoff docs, and two weeks of support included. Then we stay in touch for the long haul.</p>
+    </section>
+
+    <!-- WORK -->
+    <section class="work" id="work">
+      <div class="section-label">§ 02 / Selected work</div>
+      <h2 class="section-title">A few things I've <em>recently</em> built.</h2>
+
+      <div class="work-list">
+        <a href="#" class="work-item">
+          <div class="work-num">01</div>
+          <div class="work-name"><em>JMV</em> Fitness and Training</div>
+          <div class="work-type">Work in progress</div>
+          <div class="work-year">2026</div>
+        </a>
       </div>
+    </section>
+  </div>
+
+  <!-- PROCESS (full-width dark) -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="section-label">§ 03 / How we'll work</div>
+      <h2 class="section-title" style="color: var(--bg);">A process that respects <em
+          style="color: var(--accent-soft);">your time</em> and mine.</h2>
+
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="process-num">i.</div>
+          <h3>Intro call</h3>
+          <p>30 minutes. We talk about what you're building, what success looks like, and whether we're a fit. No pitch
+            deck.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">ii.</div>
+          <h3>Proposal</h3>
+          <p>Scope, timeline, and fixed price delivered within 48 hours. You'll know exactly what you're paying for.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">iii.</div>
+          <h3>Build</h3>
+          <p>Async updates, a live staging link from day one, and weekly check-ins. You see everything as it's built.
+          </p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">iv.</div>
+          <h3>Launch</h3>
+          <p>Deployment, handoff docs, and two weeks of support included. Then we stay in touch for the long haul.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- TESTIMONIAL -->
+    <section class="testimonial">
+      <blockquote>
+        The best freelancer we've worked with. Shipped on time, communicated clearly, and the site <em>looks better</em>
+        than anything we could have imagined.
+      </blockquote>
+      <div class="testimonial-attr">
+        <strong>Ted Armstrong</strong> &nbsp;/&nbsp; Founder, Candle Co.
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="section-label">§ 04 / Get in touch</div>
+      <div class="contact-inner">
+        <h2 class="contact-title">Let's build <em>something</em> good.</h2>
+        <div class="contact-details">
+          <div class="contact-row">
+            <span class="label">Email</span>
+            <a href="mailto:hello@webermarcus.dev" class="value">hello@webermarcus.dev</a>
+          </div>
+          <div class="contact-row">
+            <span class="label">Availability</span>
+            <span class="value">Booking for Q2 2026</span>
+          </div>
+          <div class="contact-cta-wrap">
+            <button type="button" class="contact-cta js-open-modal">
+              Start a project <span class="arrow">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div>© 2026 Marcus Weber · Made with care</div>
+      <div class="socials">
+        <a href="https://github.com/webermarcus" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/marcus-weber-0731b4200/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ── PROJECT INQUIRY MODAL ─────────────────────── -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Close form">×</button>
+
+      <div class="section-label">§ Let's talk</div>
+      <h3 class="modal-title" id="modalTitle">Tell me about your <em>project</em>.</h3>
+      <p class="modal-subtitle">The more you share, the better the proposal. I'll respond within 48 hours.</p>
+
+      <form id="projectForm">
+        <!-- Web3Forms config: replace YOUR_ACCESS_KEY_HERE with your own key from https://web3forms.com -->
+        <input type="hidden" name="access_key" value="07f759e8-571a-4d05-863c-9c6ccdd3c07a">
+        <input type="hidden" name="subject" value="New project inquiry via webermarcus.dev">
+        <input type="hidden" name="from_name" value="webermarcus.dev inquiry">
+        <!-- Honeypot for spam protection -->
+        <input type="checkbox" name="botcheck" class="honeypot" tabindex="-1" autocomplete="off">
+
+        <div class="form-row">
+          <label>
+            <span class="field-label">Your name *</span>
+            <input type="text" name="name" required autocomplete="name">
+          </label>
+          <label>
+            <span class="field-label">Email *</span>
+            <input type="email" name="email" required autocomplete="email">
+          </label>
+        </div>
+
+        <label>
+          <span class="field-label">Company or project name</span>
+          <input type="text" name="company" autocomplete="organization">
+        </label>
+
+        <div class="form-row">
+          <label>
+            <span class="field-label">Project type *</span>
+            <select name="project_type" required>
+              <option value="">Choose one…</option>
+              <option>Marketing site</option>
+              <option>Web application</option>
+              <option>E-commerce storefront</option>
+              <option>Redesign / rebuild</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <label>
+            <span class="field-label">Budget range *</span>
+            <select name="budget" required>
+              <option value="">Choose one…</option>
+              <option>Under $5k</option>
+              <option>$5k to $15k</option>
+              <option>$15k to $50k</option>
+              <option>$50k+</option>
+              <option>Not sure yet</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          <span class="field-label">Timeline *</span>
+          <select name="timeline" required>
+            <option value="">Choose one…</option>
+            <option>ASAP</option>
+            <option>Next 1 to 3 months</option>
+            <option>3 to 6 months</option>
+            <option>Flexible</option>
+          </select>
+        </label>
+
+        <label>
+          <span class="field-label">Project details *</span>
+          <textarea name="message" rows="5" required
+            placeholder="What are you building? What's the goal? Anything else I should know…"></textarea>
+        </label>
+
+        <button type="submit" class="form-submit" id="formSubmit">
+          Send inquiry <span class="arrow">→</span>
+        </button>
+
+        <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </div>
-</section>
 
-<div class="container">
+  <script>
+    // ── Subtle parallax on hero meta ──────────────────
+    const heroMeta = document.querySelector('.hero-meta');
+    if (heroMeta) {
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        if (y < 800) heroMeta.style.transform = `translateY(${y * 0.3}px)`;
+      });
+    }
 
-  <!-- TESTIMONIAL -->
-  <section class="testimonial">
-    <blockquote>
-      The best freelancer we've worked with. Shipped on time, communicated clearly, and the site <em>looks better</em> than anything we could have imagined.
-    </blockquote>
-    <div class="testimonial-attr">
-      <strong>Ted Armstrong</strong> &nbsp;/&nbsp; Founder, Candle Co.
-    </div>
-  </section>
+    // ── Section reveal on scroll ──────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
 
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <div class="section-label">§ 04 / Get in touch</div>
-    <div class="contact-inner">
-      <h2 class="contact-title">Let's build <em>something</em> good.</h2>
-      <div class="contact-details">
-        <div class="contact-row">
-          <span class="label">Email</span>
-          <a href="mailto:hello@marcusweber.com" class="value">hello@marcusweber.com</a>
-        </div>
-        <div class="contact-row">
-          <span class="label">Availability</span>
-          <span class="value">Booking for Q2 2026</span>
-        </div>
-        <div class="contact-cta-wrap">
-          <a href="mailto:hello@marcusweber.com" class="contact-cta">
-            Start a project <span class="arrow">→</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div>© 2026 Marcus Weber · Made with care</div>
-    <div class="socials">
-      <a href="#">GitHub</a>
-      <a href="#">LinkedIn</a>
-    </div>
-  </footer>
-
-</div>
-
-<script>
-  // Subtle parallax on hero meta
-  const heroMeta = document.querySelector('.hero-meta');
-  if (heroMeta) {
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < 800) heroMeta.style.transform = `translateY(${y * 0.3}px)`;
+    document.querySelectorAll('section:not(.hero)').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(40px)';
+      section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+      observer.observe(section);
     });
-  }
 
-  // Intersection observer for section reveals
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
+    // ── Modal open / close ────────────────────────────
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+    const openButtons = document.querySelectorAll('.js-open-modal');
+    const projectForm = document.getElementById('projectForm');
+    const formStatus = document.getElementById('formStatus');
+    const formSubmit = document.getElementById('formSubmit');
+
+    function openModal(e) {
+      e.preventDefault();
+      modalOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        const firstInput = projectForm.querySelector('input[name="name"]');
+        if (firstInput) firstInput.focus();
+      }, 400);
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    openButtons.forEach(btn => btn.addEventListener('click', openModal));
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) closeModal();
+    });
+
+    // ── Form submission (Web3Forms) ───────────────────
+    projectForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      formStatus.className = 'form-status';
+      formStatus.textContent = '';
+      formSubmit.disabled = true;
+      formSubmit.innerHTML = 'Sending…';
+
+      const formData = new FormData(projectForm);
+      const payload = Object.fromEntries(formData);
+
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          formStatus.className = 'form-status success';
+          formStatus.textContent = '✓ Thanks, your inquiry is in. I\'ll respond within 48 hours.';
+          projectForm.reset();
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
+      } catch (err) {
+        formStatus.className = 'form-status error';
+        formStatus.innerHTML = '✗ Something went wrong. Please email <a href="mailto:hello@webermarcus.dev" style="color:var(--accent);">hello@webermarcus.dev</a> directly.';
+      } finally {
+        formSubmit.disabled = false;
+        formSubmit.innerHTML = 'Send inquiry <span class="arrow">→</span>';
       }
     });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('section:not(.hero)').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(40px)';
-    section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    observer.observe(section);
-  });
-</script>
+  </script>
 
 </body>
+
 </html>
