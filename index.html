@@ -8,7 +8,21 @@
   <meta name="description"
     content="Freelance web developer building fast, thoughtful websites for independent businesses and ambitious founders.">
 
-  <!-- Favicon: inline SVG monogram. Swap for a proper favicon later (see favicon.io or realfavicongenerator.net) -->
+  <!-- ── Apply theme before render to prevent flash ── -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme-preference');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = stored || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
+  <!-- Favicon: inline SVG monogram -->
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231A1814'/%3E%3Ctext x='50' y='74' font-size='70' text-anchor='middle' fill='%23B8421C' font-family='Georgia,serif' font-style='italic'%3EM%3C/text%3E%3C/svg%3E">
 
@@ -19,7 +33,9 @@
     rel="stylesheet">
 
   <style>
+    /* ── THEME TOKENS ────────────────────────────────── */
     :root {
+      /* Light (default) */
       --bg: #F2EDE2;
       --bg-soft: #E8DFD0;
       --ink: #1A1814;
@@ -29,6 +45,34 @@
       --accent-soft: #D4663A;
       --line: #1A181422;
       --grain-opacity: 0.035;
+      --grain-blend: multiply;
+      --nav-blend: multiply;
+      --shadow-modal: rgba(26, 24, 20, 0.3);
+    }
+
+    [data-theme="dark"] {
+      /* Midnight library: warm dark, cream text, brighter accent for contrast */
+      --bg: #1A1814;
+      --bg-soft: #2B2720;
+      --ink: #F2EDE2;
+      --ink-soft: #D4CDBD;
+      --muted: #8F8579;
+      --accent: #D4663A;
+      --accent-soft: #E89670;
+      --line: rgba(242, 237, 226, 0.13);
+      --grain-opacity: 0.05;
+      --grain-blend: screen;
+      --nav-blend: difference;
+      --shadow-modal: rgba(0, 0, 0, 0.6);
+    }
+
+    /* ── SMOOTH THEME TRANSITIONS ────────────────────── */
+    /* Only applied during an active theme swap, not on every hover */
+    html.theme-transitioning,
+    html.theme-transitioning *,
+    html.theme-transitioning *::before,
+    html.theme-transitioning *::after {
+      transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, fill 0.45s ease, box-shadow 0.45s ease !important;
     }
 
     * {
@@ -61,7 +105,7 @@
       z-index: 100;
       opacity: var(--grain-opacity);
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      mix-blend-mode: multiply;
+      mix-blend-mode: var(--grain-blend);
     }
 
     .serif {
@@ -96,7 +140,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      mix-blend-mode: multiply;
+      mix-blend-mode: var(--nav-blend);
     }
 
     .logo {
@@ -131,6 +175,12 @@
       opacity: 1;
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .nav-cta {
       display: inline-block;
       padding: 10px 18px;
@@ -148,6 +198,65 @@
     .nav-cta:hover {
       background: var(--ink);
       color: var(--bg);
+    }
+
+    /* ── THEME TOGGLE ────────────────────────────────── */
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      position: relative;
+      transition: background 0.2s, color 0.2s, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .theme-toggle:hover {
+      background: var(--ink);
+      color: var(--bg);
+      transform: rotate(180deg);
+    }
+
+    .theme-icon {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* Convention: show the icon of what we'll switch TO */
+    .theme-icon-sun {
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(-90deg) scale(0.5);
+    }
+
+    .theme-icon-moon {
+      opacity: 1;
+      transform: translate(-50%, -50%) rotate(0) scale(1);
+    }
+
+    [data-theme="dark"] .theme-icon-sun {
+      opacity: 1;
+      transform: translate(-50%, -50%) rotate(0) scale(1);
+    }
+
+    [data-theme="dark"] .theme-icon-moon {
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(90deg) scale(0.5);
     }
 
     /* ── HERO ────────────────────────────────────────── */
@@ -466,6 +575,8 @@
     }
 
     /* ── PROCESS ─────────────────────────────────────── */
+    /* In light mode, this section is dark-on-light.
+       In dark mode, it flips to light-on-dark, staying visually distinct. */
     .process {
       background: var(--ink);
       color: var(--bg);
@@ -493,6 +604,10 @@
       padding-top: 24px;
     }
 
+    [data-theme="dark"] .process-step {
+      border-top-color: #1A181422;
+    }
+
     .process-num {
       font-family: 'Instrument Serif', serif;
       font-style: italic;
@@ -513,6 +628,10 @@
       font-size: 14px;
       color: #FFFFFFAA;
       line-height: 1.5;
+    }
+
+    [data-theme="dark"] .process-step p {
+      color: #1A1814AA;
     }
 
     /* ── CONTACT / CTA ───────────────────────────────── */
@@ -652,6 +771,10 @@
       transition: opacity 0.3s ease;
     }
 
+    [data-theme="dark"] .modal-overlay {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
     .modal-overlay.active {
       display: flex;
       opacity: 1;
@@ -666,7 +789,11 @@
       position: relative;
       transform: translateY(24px);
       transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-      box-shadow: 0 40px 80px rgba(26, 24, 20, 0.3);
+      box-shadow: 0 40px 80px var(--shadow-modal);
+    }
+
+    [data-theme="dark"] .modal {
+      border: 1px solid var(--line);
     }
 
     .modal-overlay.active .modal {
@@ -780,6 +907,10 @@
       padding-right: 36px;
     }
 
+    [data-theme="dark"] #projectForm select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%238F8579' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    }
+
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -831,11 +962,20 @@
       border: 1px solid rgba(184, 66, 28, 0.3);
     }
 
+    [data-theme="dark"] .form-status.success {
+      background: rgba(212, 102, 58, 0.12);
+      border-color: rgba(212, 102, 58, 0.4);
+    }
+
     .form-status.error {
       display: block;
       background: rgba(26, 24, 20, 0.06);
       color: var(--ink);
       border: 1px solid var(--line);
+    }
+
+    [data-theme="dark"] .form-status.error {
+      background: rgba(242, 237, 226, 0.06);
     }
 
     .honeypot {
@@ -956,7 +1096,27 @@
       <li><a href="#work">Work</a></li>
       <li><a href="#process">Process</a></li>
     </ul>
-    <button type="button" class="nav-cta js-open-modal">Start a project</button>
+    <div class="nav-right">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">
+        <!-- Moon (shown in light mode: click to go dark) -->
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <!-- Sun (shown in dark mode: click to go light) -->
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="4" />
+          <line x1="12" y1="2" x2="12" y2="4" />
+          <line x1="12" y1="20" x2="12" y2="22" />
+          <line x1="4.93" y1="4.93" x2="6.34" y2="6.34" />
+          <line x1="17.66" y1="17.66" x2="19.07" y2="19.07" />
+          <line x1="2" y1="12" x2="4" y2="12" />
+          <line x1="20" y1="12" x2="22" y2="12" />
+          <line x1="6.34" y1="17.66" x2="4.93" y2="19.07" />
+          <line x1="19.07" y1="4.93" x2="17.66" y2="6.34" />
+        </svg>
+      </button>
+      <button type="button" class="nav-cta js-open-modal">Start a project</button>
+    </div>
   </nav>
 
   <div class="container">
@@ -1043,7 +1203,7 @@
     </section>
   </div>
 
-  <!-- PROCESS (full-width dark) -->
+  <!-- PROCESS (full-width, inverted section) -->
   <section class="process" id="process">
     <div class="container">
       <div class="section-label">§ 03 / How we'll work</div>
@@ -1091,7 +1251,7 @@
           </div>
           <div class="contact-row">
             <span class="label">Availability</span>
-            <span class="value">Currently accepting new projects</span>
+            <span class="value">Booking for Q2 2026</span>
           </div>
           <div class="contact-cta-wrap">
             <button type="button" class="contact-cta js-open-modal">
@@ -1197,6 +1357,36 @@
   </div>
 
   <script>
+    // ── THEME SYSTEM ──────────────────────────────────
+    const THEME_KEY = 'theme-preference';
+    const htmlEl = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const systemPref = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function setTheme(theme, persist) {
+      htmlEl.setAttribute('data-theme', theme);
+      if (persist) {
+        try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+      }
+    }
+
+    function toggleTheme() {
+      const current = htmlEl.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      htmlEl.classList.add('theme-transitioning');
+      setTheme(next, true);
+      window.setTimeout(() => htmlEl.classList.remove('theme-transitioning'), 500);
+    }
+
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Follow system preference if user hasn't explicitly chosen
+    systemPref.addEventListener('change', (e) => {
+      let stored = null;
+      try { stored = localStorage.getItem(THEME_KEY); } catch (err) {}
+      if (!stored) setTheme(e.matches ? 'dark' : 'light', false);
+    });
+
     // ── Subtle parallax on hero meta ──────────────────
     const heroMeta = document.querySelector('.hero-meta');
     if (heroMeta) {
