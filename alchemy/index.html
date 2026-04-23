@@ -140,6 +140,30 @@ textarea.grimoire{min-height:220px;font-family:'Instrument Serif',serif;font-siz
 .hero-btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
 .hero-btn.primary:hover{background:var(--ink);border-color:var(--ink)}
 @media (max-width:700px){nav{padding:12px 16px}.nav-mid{display:none}.hero{padding:28px 16px 18px}main{padding:16px 16px 80px}.stats{grid-template-columns:repeat(2,1fr)}.cal-cell{min-height:46px;padding:4px 5px}.cal-cell .d{font-size:12px}.cal-cell .l{font-size:9px}.detail-head{padding:16px 18px 12px}.detail-body{padding:18px 18px 24px}.jump-today{bottom:16px;right:16px;padding:8px 12px;font-size:10px}}
+.modal-overlay{position:fixed;inset:0;background:rgba(26,24,20,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:60px 20px;overflow-y:auto;opacity:0;transition:opacity .3s}
+[data-theme="dark"] .modal-overlay{background:rgba(0,0,0,0.7)}
+.modal-overlay.active{display:flex;opacity:1}
+.modal{background:var(--bg);border-radius:6px;max-width:560px;width:100%;padding:40px;position:relative;transform:translateY(24px);transition:transform .4s cubic-bezier(.2,.8,.2,1);box-shadow:0 40px 80px rgba(26,24,20,0.3)}
+[data-theme="dark"] .modal{border:1px solid var(--line);box-shadow:0 40px 80px rgba(0,0,0,.6)}
+.modal-overlay.active .modal{transform:translateY(0)}
+.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.modal-title{font-family:'Instrument Serif',serif;font-size:36px;line-height:1;letter-spacing:-.02em;margin-bottom:6px;font-weight:400}
+.modal-title em{font-style:italic;color:var(--accent)}
+.modal-subtitle{color:var(--muted);margin-bottom:28px;font-size:14px}
+.modal section{margin-bottom:24px;padding-bottom:20px;border-bottom:.5px solid var(--line)}
+.modal section:last-of-type{border-bottom:none;margin-bottom:8px}
+.modal section h4{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;font-weight:500}
+.modal section p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:12px}
+.modal .btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.modal .btn{font-family:'Manrope',sans-serif;font-weight:500;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;border:.5px solid var(--line);background:transparent;color:var(--ink);transition:all .2s}
+.modal .btn:hover{background:var(--bg-soft)}
+.modal .btn.btn-primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.modal .btn.btn-primary:hover{background:var(--ink);border-color:var(--ink)}
+.modal .btn.btn-danger{color:var(--accent);border-color:var(--accent)}
+.modal .btn.btn-danger:hover{background:var(--accent);color:var(--bg)}
+.modal-flash{font-family:'JetBrains Mono',monospace;font-size:11px;padding:8px 12px;background:var(--accent-pale);color:var(--accent);border-radius:3px;margin-top:10px;display:none}
+.modal-flash.show{display:block}
 </style>
 </head>
 <body>
@@ -147,7 +171,11 @@ textarea.grimoire{min-height:220px;font-family:'Instrument Serif',serif;font-siz
   <a href="/" class="logo">Alchemy</a>
   <div class="nav-mid" id="navMid">§ The athanor stays lit</div>
   <div class="nav-right">
+    <a href="./grimoire.html" class="nav-link">Grimoire</a>
     <a href="/" class="nav-link">Portfolio</a>
+    <button class="theme-toggle" id="settingsBtn" aria-label="Settings" title="Backup & settings">
+      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
       <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="6.34" y1="17.66" x2="4.93" y2="19.07"/><line x1="19.07" y1="4.93" x2="17.66" y2="6.34"/></svg>
@@ -179,378 +207,39 @@ textarea.grimoire{min-height:220px;font-family:'Instrument Serif',serif;font-siz
   </div>
 </main>
 <button class="jump-today" id="fabToday" title="Jump to today">Jump to today</button>
-<script id="dataScript">
-const LINKS = {
-  YDKJS_SC:"https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/README.md",
-  YDKJS_AP:"https://github.com/getify/You-Dont-Know-JS/tree/1st-ed/async%20%26%20performance",
-  SLP3:"https://web.stanford.edu/~jurafsky/slp3/",
-  SLP3_CH2:"https://web.stanford.edu/~jurafsky/slp3/2.pdf",
-  CI:"https://craftinginterpreters.com/contents.html",
-  KR:"https://gaia.cs.umass.edu/kurose_ross/online_lectures.htm",
-  UTIL:"https://use-the-index-luke.com/",
-  IIR:"https://nlp.stanford.edu/IR-book/",
-  DDIA:"https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/",
-  CS224N:"https://web.stanford.edu/class/cs224n/",
-  MAKEMORE:"https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ",
-  GPT_VIDEO:"https://www.youtube.com/watch?v=kCc8FmEb1nY",
-  SIX824:"https://pdos.csail.mit.edu/6.824/",
-  SCHEGLOFF:"https://www.cambridge.org/core/books/sequence-organization-in-interaction/E768A1B0B88C81F88CB3A6C54EDD60E6",
-  MW:"https://link.springer.com/book/10.1057/9780230511910",
-  ASTRO:"https://docs.astro.build",
-  NETLIFY:"https://www.netlify.com/",
-  PORTER:"https://tartarus.org/martin/PorterStemmer/",
-  BM25:"https://www.staff.city.ac.uk/~sbrp622/papers/foundations_bm25_review.pdf",
-  SWDA:"https://web.stanford.edu/~jurafsky/ws97/",
-  GFS:"https://research.google/pubs/the-google-file-system/"
-};
 
-const PRESEASON = [
-  {title:"Tools & domain",body:"Install Node 20+, Git, and your editor. Register an alchemy-themed domain today — athanor, coagula, prima-materia, aurifex. Point DNS at your hosting provider.",tasks:["Install Node 20+ and verify with node --version","Register an alchemy-themed domain","Create a private grimoire repo on GitHub","Create a public alchemy-site repo","Decide: physical notebook or text file for grimoire. Commit to one."]},
-  {title:"Skim tables of contents",body:"Open YDKJS Scope & Closures and SLP3 chapter 2. Read only the table of contents, the introduction, and the summaries. You are making a map of the territory. Annotate nothing yet.",tasks:["Read the YDKJS Scope & Closures TOC and intro","Read the SLP3 chapter 2 intro and section headings","Note the three concepts that feel most unfamiliar"],links:[["YDKJS Scope & Closures",LINKS.YDKJS_SC],["SLP3 chapter 2 PDF",LINKS.SLP3_CH2]]},
-  {title:"Block the calendar",body:"Put recurring Mon–Fri study slots and the Saturday project block on your real calendar through May 31. Tell whoever needs to know that your mornings are taken. The plan only works if the time is visible.",tasks:["Create recurring Mon–Fri 45-minute slots","Block Saturday project blocks (3 hours)","Block Sunday review hour","Tell anyone who needs to know","Tomorrow is Monday, May 4. Ready."]}
-];
+<div class="modal-overlay" id="settingsModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button type="button" class="modal-close" id="settingsClose" aria-label="Close">×</button>
+    <h3 class="modal-title">Backup & <em>settings</em></h3>
+    <p class="modal-subtitle">Your progress lives in this browser's storage. Keep it safe.</p>
 
-const WEEKS = [
-  {theme:"Scope & regex",
-    mon:{src:"YDKJS Scope & Closures ch.1",focus:"The compile/execute distinction. Annotate every time the book distinguishes Engine, Compiler, and Scope as separate actors.",link:LINKS.YDKJS_SC},
-    tue:{src:"SLP3 §2.1–2.2 (regex, words, corpora)",focus:"Why tokenization is harder than it looks. List three cases where naive regex fails on English.",link:LINKS.SLP3_CH2},
-    wed:{title:"Without the book",tasks:["Explain the compile→execute split in your own words.","Given var a=10; function foo(){console.log(a); var a; a=5;} — trace what the compiler does and what the engine does when foo() runs.","Describe lexical scope from memory."]},
-    thu:{title:"Regex drills",tasks:["Match email addresses. Test edge cases: plus-addressing, subdomains, IDN.","Match URLs including query strings and fragments.","Match contractions (don't, we'll) and hashtags.","Match @mentions. Compare your regex to a reference implementation."]},
-    fri:{prompt:"What is scope, actually? What's the difference between where a variable is declared and where it's accessible?",hardConcept:"Lexical scope vs dynamic scope"},
-    sat:{title:"Alchemy site v0",desc:"Set up Astro. Deploy to Netlify or Cloudflare Pages. Point your alchemy domain. Create the pages /, /projects, /grimoire, /now, /about. Write /about in three sentences. Ship it live today.",tasks:["Install Astro starter","Deploy empty site to Netlify or Cloudflare Pages","Configure custom domain","Create five pages with minimal content","Write /about in three sentences","Push to the public GitHub repo"],links:[["Astro docs",LINKS.ASTRO],["Netlify",LINKS.NETLIFY]]},
-    sun:{items:["Re-read the week's annotations","Re-read Friday's grimoire entry","Update /now on the alchemy site: what you're reading this month"],check:["Explain hoisting without notes","Write a regex that matches ISBN-13 numbers"]}},
-  {theme:"Closure & tokenization",
-    mon:{src:"YDKJS Scope & Closures ch.2–3",focus:"The lexical environment at function creation. Annotate the difference between a function's definition site and its call site.",link:LINKS.YDKJS_SC},
-    tue:{src:"SLP3 §2.3–2.4 (normalization, lemmatization, stemming)",focus:"What decisions does a tokenizer implicitly make that a user never sees?",link:LINKS.SLP3_CH2},
-    wed:{title:"Without the book",tasks:["Define closure in your own words. 'A function that remembers' is too vague — be specific about what it closes over.","Write a counter using closure.","Write an IIFE that exposes a small module."]},
-    thu:{title:"Tokenizer edge-case census",tasks:["On paper, list every edge case a production English tokenizer must handle.","Compare: would a whitespace tokenizer split 'U.S.A.', \"don't\", 'twenty-first-century'?","What about URLs, emails, emoji, emoticons?","Ship the list to your grimoire as a reference."]},
-    fri:{prompt:"What is a closure, actually? Why is 'a function inside a function' not the right definition?",hardConcept:"What a closure actually closes over"},
-    sat:{title:"English tokenizer v1",desc:"Input: a string. Output: array of tokens. Handle contractions, URLs, emoticons, punctuation, apostrophes. Test against a tricky corpus you choose. Host as an interactive widget on the alchemy site — input box, token array output.",tasks:["Write tokenize(text) in plain JS","Test on 10 tricky inputs; log failures","Build a widget page with input and output","Deploy to the alchemy site","Write a 200-word post linking the failures"],links:[["Astro docs",LINKS.ASTRO]]},
-    sun:{items:["Re-read week's annotations","Re-read Friday's grimoire entry"],check:["Explain the temporal dead zone in 60 seconds","Name five tokenizer edge cases"]}},
-  {theme:"Async & Levenshtein",
-    mon:{src:"YDKJS Async & Performance ch.1",focus:"The call stack and the task queue. Draw the event loop from memory after reading.",link:LINKS.YDKJS_AP},
-    tue:{src:"SLP3 §2.5–2.6 (sentence segmentation, minimum edit distance definition)",focus:"The DP recurrence. Why does memoization work here?",link:LINKS.SLP3_CH2},
-    wed:{title:"Predict the output",tasks:["Predict output order for three snippets mixing setTimeout and synchronous code.","Predict output order for three snippets mixing Promises and setTimeout.","Explain what microtasks are and when they run."]},
-    thu:{title:"Levenshtein by hand",tasks:["Walk through Levenshtein for 'alchemy' vs 'anatomy'. Fill the DP table cell by cell.","Identify the minimum edit path.","Repeat for 'kitten' vs 'sitting'."]},
-    fri:{prompt:"Why is the event loop not a mystery once you understand the call stack and the task queue?",hardConcept:"The event loop"},
-    sat:{title:"Levenshtein visualizer",desc:"Implement recursive Levenshtein first — see it be slow. Then memoize it. Then build a web page: two input strings, click compute, see the DP table fill in cell-by-cell with the minimum path highlighted. Host on alchemy site.",tasks:["Recursive Levenshtein — observe the exponential time","Memoized version — note the speedup","Web UI with two inputs","Animated DP table fill","Path highlighting","Ship to alchemy site"]},
-    sun:{items:["Re-read week's grimoire","Update /now page"],check:["Write the Levenshtein recurrence from memory","Draw the event loop with task queue and microtask queue"]}},
-  {theme:"Promises & multilingual",
-    mon:{src:"YDKJS Async & Performance ch.2–3 (callbacks, promises)",focus:"What problems do promises solve that callbacks made hard?",link:LINKS.YDKJS_AP},
-    tue:{src:"SLP3 §2.7 and ch.3 §3.1 (edit distance applications, n-gram intro)",focus:"Why is tokenization context-dependent? When does the same sequence tokenize differently?",link:LINKS.SLP3},
-    wed:{title:"Callback → Promise",tasks:["Convert three broken callback chains into clean promise chains.","Explain why promises are 'thenable'.","Write Promise.all from scratch using only the Promise constructor."]},
-    thu:{title:"CJK tokenizer design",tasks:["Design a test suite for Japanese or Chinese tokenization on paper.","Enumerate cases a naive whitespace tokenizer fails on.","Research: Jieba for Chinese, MeCab for Japanese. Note their approaches."]},
-    fri:{prompt:"What did I think tokenization was two weeks ago, and what do I think it is now?",hardConcept:"What tokenization implicitly decides"},
-    sat:{title:"Multilingual tokenizer v2",desc:"Extend the English tokenizer to handle a space-less language (Chinese or Japanese). Implement a naive approach. Watch it fail. Document what broke and why. Do NOT solve it fully — this is a documented-failure post, which is more honest and more useful than pretending you cracked it in an afternoon.",tasks:["Extend tokenize() to try CJK","Run it on a sample text","Document the failures with specific examples","Write a post titled 'What I learned not tokenizing Chinese'","Ship to alchemy site"]},
-    sun:{items:["MONTHLY REVIEW — re-read all four May grimoire entries","Update /now for June","Write the May-in-review post (~1000 words)","Publish it"],check:["What did you read?","What did you build?","What don't you yet understand?","What surprised you?","What are you reading in June?"],monthly:true}},
-  {theme:"Lox scanner & n-grams",
-    mon:{src:"Crafting Interpreters ch.1–2 (introduction, Lox overview)",focus:"The map of interpreters. What makes tree-walk vs bytecode different?",link:LINKS.CI},
-    tue:{src:"SLP3 §3.2 (n-gram models)",focus:"The probability chain rule. Why is it approximated?",link:LINKS.SLP3},
-    wed:{title:"Interpreter taxonomy",tasks:["Distinguish tree-walk vs bytecode interpreters in your own words.","Sketch your own dialect of Lox — what would you add, what would you remove?","Explain why most production languages compile to bytecode."]},
-    thu:{title:"Bigram by hand",tasks:["Compute bigram probabilities by hand on a 5-sentence toy corpus.","Estimate P(sentence) for a new sentence. Compare to a trigram estimate.","Identify where the model fails."]},
-    fri:{prompt:"What is a language? What does it mean that Lox and n-grams both 'model' something?",hardConcept:"What it means to be a language"},
-    sat:{title:"Lox scanner",desc:"Implement the Lox scanner in JavaScript (commit to JS — you will carry this code for 6 weeks). Host a 'Lox in your browser' playground on the alchemy site: input code, output token stream with types and line numbers.",tasks:["Port the Lox scanner from Java to JS","Handle all Lox tokens","Write unit tests for tricky cases (strings, numbers, keywords)","Build a playground page: textarea in, token list out","Deploy to alchemy site"],links:[["Crafting Interpreters",LINKS.CI]]},
-    sun:{items:["Re-read week's grimoire","Note anything from CI that was unclear"],check:["Describe the scanner's state machine","Compute a trigram probability by hand"]}},
-  {theme:"AST & smoothing",
-    mon:{src:"CI ch.3–4 (the Lox language, scanning)",focus:"Regular vs context-free languages. Why scanning is not enough.",link:LINKS.CI},
-    tue:{src:"SLP3 §3.4 (smoothing)",focus:"Why Laplace smoothing is almost always a bad idea in practice.",link:LINKS.SLP3},
-    wed:{title:"Scanner from memory",tasks:["Write a scanner from memory for a toy language with two token types.","Handle whitespace and comments.","Add error reporting with line numbers."]},
-    thu:{title:"Smoothing compared",tasks:["Compare add-1, add-k, and discounting on a small corpus.","Compute the effect of each on an unseen bigram.","Note when each fails."]},
-    fri:{prompt:"Why do we separate scanning from parsing? What would break if we combined them?",hardConcept:"Regular vs context-free"},
-    sat:{title:"AST viewer",desc:"Extend the playground to show the AST of a parsed expression. Color-code node types. Make expressions clickable to highlight their tokens.",tasks:["Implement expression parser","Render AST as a tree","Color-code by node type","Link tokens to AST nodes","Deploy"]},
-    sun:{items:["Re-read week's grimoire","Review the Lox grammar"],check:["Difference between regular and context-free","Name three smoothing techniques"]}},
-  {theme:"Parsing & Kneser-Ney",
-    mon:{src:"CI ch.5–6 (representing code, parsing expressions)",focus:"The visitor pattern. Why it's the right shape for interpreters.",link:LINKS.CI},
-    tue:{src:"SLP3 §3.5 (Kneser-Ney)",focus:"Why continuation probability works better than raw frequency.",link:LINKS.SLP3},
-    wed:{title:"Recursive descent from memory",tasks:["Implement a recursive-descent parser for arithmetic (+, -, *, /, parens) from memory.","Add unary minus.","Test against tricky expressions."]},
-    thu:{title:"Kneser-Ney by hand",tasks:["Explain K-N in your own words with a worked example.","Compute continuation count for a specific bigram on a small corpus.","Compare K-N to add-1 on the same corpus."]},
-    fri:{prompt:"What does it mean to 'parse' something? Why do we make ASTs instead of just running tokens?",hardConcept:"The visitor pattern"},
-    sat:{title:"Austen n-gram generator",desc:"Train a character-level n-gram model on Pride and Prejudice (Project Gutenberg). Generate 500-character samples. Observe how they sound more Austen-like as n grows, and more overfit at the same time.",tasks:["Download Pride and Prejudice text","Train char-level bigram, trigram, 4-gram","Generate samples from each","Compare outputs","Post best samples to alchemy site with commentary"]},
-    sun:{items:["Re-read week's grimoire"],check:["Visitor pattern from memory","Kneser-Ney in one paragraph"]}},
-  {theme:"Evaluation & perplexity",
-    mon:{src:"CI ch.7 (evaluating expressions)",focus:"Tree-walking. How interpretation is just recursion over the AST.",link:LINKS.CI},
-    tue:{src:"SLP3 §3.6–3.7 (evaluation, perplexity)",focus:"What perplexity actually measures. Why lower is better.",link:LINKS.SLP3},
-    wed:{title:"AST eval by hand",tasks:["Evaluate a toy AST by hand step by step.","Trace what happens for 2 + 3 * 4.","Add precedence correctly."]},
-    thu:{title:"Perplexity computed",tasks:["Compute perplexity for a bigram model on a 10-sentence test set by hand.","Explain what 'confused by a factor of N' means.","Identify what would halve it."]},
-    fri:{prompt:"What is perplexity, in one paragraph, without the formula?",hardConcept:"Perplexity"},
-    sat:{title:"Lox evaluates arithmetic",desc:"Extend the playground: input expression, output result. Handle precedence, parens, unary minus. Report errors with line numbers. This is the first time your language computes something.",tasks:["Wire parser to evaluator","Handle arithmetic correctly","Handle division by zero","Report errors with line numbers","Update playground UI"]},
-    sun:{items:["Re-read week's grimoire"],check:["What is perplexity, plainly?","Evaluate 2 + 3 * 4 using the visitor pattern from memory"]}},
-  {theme:"State & naive Bayes",
-    mon:{src:"CI ch.8 (statements and state)",focus:"Environments as data structures. A scope is a map.",link:LINKS.CI},
-    tue:{src:"SLP3 §4.1 (naive Bayes intro)",focus:"The independence assumption. Why it's wrong and why it often works.",link:LINKS.SLP3},
-    wed:{title:"Environment design",tasks:["Design an environment for a scoped language. Nested maps with a parent pointer.","Implement lookup and define.","Handle shadowing."]},
-    thu:{title:"NB posterior by hand",tasks:["Compute NB posterior for a 3-document spam classification by hand.","Show prior × likelihoods.","Argmax over classes."]},
-    fri:{prompt:"A language is a data structure. What data structure is a program?",hardConcept:"Environments as scopes"},
-    sat:{title:"Lox has variables",desc:"Add variable declarations (var name = expr;), assignment, and lookup. Test in playground. A single scope is enough for today — nested scopes come next week.",tasks:["Add var statement to parser","Implement environment data structure","Add lookup + define","Error on undefined variables","Update playground examples"]},
-    sun:{items:["Re-read week's grimoire"],check:["What is the independence assumption?","Why does NB work despite being wrong?"]}},
-  {theme:"Control flow & NB",
-    mon:{src:"CI ch.9 (control flow)",focus:"Branching and looping as grammar. If-statements are syntax sugar.",link:LINKS.CI},
-    tue:{src:"SLP3 §4.3 (training NB)",focus:"Bag-of-words as a model assumption.",link:LINKS.SLP3},
-    wed:{title:"Implement if from memory",tasks:["Walk through how if/else could be implemented in a tree-walking interpreter.","Implement while.","Sketch for as syntactic sugar for while."]},
-    thu:{title:"NB by hand",tasks:["Train NB by hand on a 5-doc binary classification (spam/ham).","Compute feature likelihoods.","Predict on a new document."]},
-    fri:{prompt:"What's the simplest possible if-statement you could implement? What does that reveal about control flow?",hardConcept:"Control flow as grammar"},
-    sat:{title:"Lox has if/while/for",desc:"Add if, while, and for to the parser and evaluator. Test with fizzbuzz. Update the playground with control-flow examples.",tasks:["Parse if/else","Parse while","Parse for (as syntactic sugar)","Evaluate all three","Add examples: fizzbuzz, fibonacci"]},
-    sun:{items:["Re-read week's grimoire"],check:["Explain bag-of-words as a model assumption","Implement a toy while-loop interpreter from memory"]}},
-  {theme:"Functions & sentiment",
-    mon:{src:"CI ch.10 (functions)",focus:"First-class functions and closures. The moment Lox becomes a real language.",link:LINKS.CI},
-    tue:{src:"SLP3 §4.5–4.8 (evaluation, cross-validation, binary sentiment)",focus:"Precision and recall. The F1 trade-off.",link:LINKS.SLP3},
-    wed:{title:"Closures in Lox, from memory",tasks:["Write a function that returns a function (counter via closure) in Lox syntax.","Trace what the environment looks like at each step.","Identify where the closure captures."]},
-    thu:{title:"Confusion matrix by hand",tasks:["Compute precision, recall, F1 from a confusion matrix by hand.","Explain what high precision / low recall means in plain language.","Identify a real case where you'd trade one for the other."]},
-    fri:{prompt:"Why are first-class functions powerful? What could you not do without them?",hardConcept:"Closures in your own interpreter"},
-    sat:{title:"NB sentiment classifier",desc:"Implement naive Bayes from scratch (no scikit-learn) on a small review dataset — try the NLTK movie reviews or a subset of IMDB. Report accuracy, precision, recall, F1. Post results.",tasks:["Load a small review dataset","Tokenize and build vocabulary","Train NB (multinomial)","Evaluate on held-out set","Write a blog post with numbers"]},
-    sun:{items:["Re-read week's grimoire"],check:["Explain closures using your own Lox","F1 from memory"]}},
-  {theme:"Resolving & logistic regression",
-    mon:{src:"CI ch.11 (resolving and binding)",focus:"Scope resolution as a pre-pass. Why interpretation in two passes matters.",link:LINKS.CI},
-    tue:{src:"SLP3 §5.1–5.4 (logistic regression, cross-entropy, gradient descent)",focus:"Why gradient descent works. The role of the sigmoid.",link:LINKS.SLP3},
-    wed:{title:"Find the scope bug",tasks:["Identify the scope-resolution bug in a given Lox snippet.","Explain the fix with a resolver pass.","Draw the scope chain before and after."]},
-    thu:{title:"GD by hand",tasks:["Compute one step of gradient descent by hand on a toy LR with 2 weights.","Show the gradient vector.","Take one step and check the loss decreased."]},
-    fri:{prompt:"Why does a language need a separate resolution pass? What goes wrong without it?",hardConcept:"Two-pass interpretation"},
-    sat:{title:"Logistic regression classifier",desc:"Implement LR with gradient descent from scratch (numpy or plain JS). Same dataset as last week's NB. Compare accuracy and F1. Note where LR beats NB and where it doesn't.",tasks:["Implement sigmoid and log-loss","Gradient descent loop","Train on same data as last week","Compare to NB","Write up the comparison"]},
-    sun:{items:["Re-read week's grimoire"],check:["Two-pass interpretation — why?","One step of gradient descent, from memory"]}},
-  {theme:"Classes & regularization",
-    mon:{src:"CI ch.12–13 (classes, inheritance)",focus:"How classes compile to closures and maps. OOP is not magic.",link:LINKS.CI},
-    tue:{src:"SLP3 §5.5–5.7 (multinomial LR, regularization)",focus:"L1 vs L2 regularization. What each biases toward.",link:LINKS.SLP3},
-    wed:{title:"Toy OOP from closures",tasks:["Implement a toy object system using just closures and maps, no 'class' keyword.","Support methods and inheritance.","Compare to Lox's approach."]},
-    thu:{title:"Regularization explained",tasks:["Explain L2 in one paragraph: what it does to weights.","Explain L1: why it induces sparsity.","Name a case where you'd prefer L1 over L2."]},
-    fri:{prompt:"I built a programming language. What mental models did it break?",hardConcept:"How much is compiler, how much is runtime"},
-    sat:{title:"Full Lox playground ships",desc:"Polish the Lox playground. Add example programs (fizzbuzz, fibonacci, a tiny class). Write a long blog post: 'Lessons from building Lox — what broke my mental models.' Link from /projects on alchemy site.",tasks:["Add example programs to the playground","Polish UI","Write the long post (~1500 words)","Publish","Tell anyone who cares"]},
-    sun:{items:["QUARTERLY CHECKPOINT. Re-read all 13 weeks of grimoire."],check:["Read an unfamiliar JS codebase and trace it without running — can you?","Build a toy OOP system from closures from memory","Explain precision, recall, F1 from memory"],quarterly:true}},
-  {theme:"Networks & indexes",
-    mon:{src:"Kurose & Ross ch.1 (computer networks and the internet)",focus:"The 5-layer model. Why layering works.",link:LINKS.KR},
-    tue:{src:"Use the Index, Luke §1–2 (anatomy of an index, B-trees)",focus:"Why random access is slow. What an index is physically.",link:LINKS.UTIL},
-    wed:{title:"5-layer from memory",tasks:["Draw the 5-layer model from memory.","Trace a packet through each layer for a simple HTTP request.","Name one protocol at each layer."]},
-    thu:{title:"B-tree mechanics",tasks:["Explain how a B-tree index supports a range query.","Draw a 3-level B-tree and show a lookup.","Compare to a hash index."]},
-    fri:{prompt:"Why do we have layers? What would a monolithic network look like?",hardConcept:"Network layering"},
-    sat:{title:"Raw TCP echo server",desc:"In Node, using the net module. No Express. Support multiple concurrent connections. Echo each message back to the sender. Handle clean disconnects.",tasks:["net.createServer()","Handle connection events","Echo data","Handle disconnects gracefully","Test with two concurrent telnet sessions"]},
-    sun:{items:["Re-read week's grimoire","Update /now page"],check:["5-layer model from memory","How a B-tree supports range queries"]}},
-  {theme:"HTTP & WHERE clauses",
-    mon:{src:"K&R ch.2 (application layer — HTTP, DNS)",focus:"The request-response cycle. Why HTTP is stateless.",link:LINKS.KR},
-    tue:{src:"Use the Index, Luke §3 (WHERE clauses)",focus:"Which predicates can use an index, which can't.",link:LINKS.UTIL},
-    wed:{title:"DNS trace",tasks:["Trace a DNS lookup for example.com step by step.","Identify the roles of root, TLD, authoritative servers.","Explain caching at each level."]},
-    thu:{title:"Query rewriting",tasks:["Rewrite a WHERE clause to make better use of an index (e.g. remove function calls on indexed columns).","Explain SARGable predicates in your own words.","Find a LIKE pattern that can use an index and one that can't."]},
-    fri:{prompt:"What actually happens when you type a URL into a browser? The full chain, end to end.",hardConcept:"The full stack of an HTTP request"},
-    sat:{title:"Raw HTTP/1.1 server",desc:"Build an HTTP/1.1 server on top of raw TCP. Parse the request line and headers by hand. Handle GET and POST. Return proper status codes. Host on the alchemy site with curl examples.",tasks:["Parse request line","Parse headers","Read body for POST","Return proper responses with status + headers","Test with curl","Ship to alchemy site with curl examples"]},
-    sun:{items:["Re-read week's grimoire"],check:["What makes a query SARGable?","Trace a DNS lookup end to end"]}},
-  {theme:"Transport & joins",
-    mon:{src:"K&R §3.1–3.5 (transport layer, UDP, reliable transfer)",focus:"UDP vs TCP trade-offs. When to choose each.",link:LINKS.KR},
-    tue:{src:"UtIL §4–5 (joins, aggregation, grouping)",focus:"Index-driven join strategies. Nested loop vs hash vs merge.",link:LINKS.UTIL},
-    wed:{title:"Design a reliable UDP",tasks:["Design a reliable transport on top of UDP.","Handle packet loss, reordering, duplication.","Compare to TCP's approach."]},
-    thu:{title:"Optimize a 3-way join",tasks:["Take a 3-way join query.","Use EXPLAIN to see the current plan.","Rewrite or reindex to improve it.","Measure the difference."]},
-    fri:{prompt:"When would you choose UDP over TCP? Name three concrete cases.",hardConcept:"Transport layer trade-offs"},
-    sat:{title:"SQL EXPLAIN exercises",desc:"Download the Chinook dataset (or use a linguistics corpus of your own). Write three hard queries: a multi-table join, a window function, a correlated subquery. Post each with EXPLAIN plans and improvement notes.",tasks:["Download Chinook","Write the three queries","Capture EXPLAIN ANALYZE output","Write improvement notes","Post to alchemy site"]},
-    sun:{items:["Re-read week's grimoire"],check:["Three cases for UDP over TCP","What a nested-loop join looks like in a plan"]}},
-  {theme:"TCP & writes",
-    mon:{src:"K&R §3.6–3.8 (TCP, congestion control)",focus:"Why TCP is so complicated. Sliding window, congestion, fairness.",link:LINKS.KR},
-    tue:{src:"UtIL §6–8 (insert, update, delete performance)",focus:"Write amplification. Why your indexes slow writes.",link:LINKS.UTIL},
-    wed:{title:"TCP from memory",tasks:["Explain the three-way handshake from memory.","Draw the TCP state machine.","Explain cumulative acknowledgment."]},
-    thu:{title:"Write-heavy schema",tasks:["Design a schema for a high-write-volume table (e.g. event log).","Decide which columns to index and which not to.","Estimate the trade-off."]},
-    fri:{prompt:"What does 'congestion' mean in networking? What's the analogy to real-world congestion?",hardConcept:"TCP congestion control"},
-    sat:{title:"URL shortener",desc:"Build a URL shortener using raw HTTP (last week's server) and direct SQL (no ORM). A form at / to submit a URL, and /xxx redirects. Persist to SQLite. Deploy.",tasks:["Schema: urls(code, url, created_at, hits)","Form at /","Redirect handler at /:code","Analytics endpoint at /:code/stats","Deploy"]},
-    sun:{items:["MONTHLY REVIEW — re-read August grimoire","Write the month-in-review post","Update /now"],check:["Three-way handshake","Write amplification explained"],monthly:true}},
-  {theme:"Inverted index & TF-IDF",
-    mon:{src:"IIR ch.1–2 (boolean retrieval, term vocabulary, postings lists)",focus:"The inverted index as a data structure. Why it inverts what it inverts.",link:LINKS.IIR},
-    tue:{src:"SLP3 §6.1–6.4 (vector semantics, TF-IDF)",focus:"Why sparse vectors work. The curse of dimensionality's quiet upside.",link:LINKS.SLP3},
-    wed:{title:"Index by hand",tasks:["Build an inverted index on paper for 5 toy documents.","Support intersection queries.","Handle negation."]},
-    thu:{title:"TF-IDF by hand",tasks:["Compute TF-IDF by hand for a 3-term query over 10 documents.","Rank the results.","Identify a case where TF-IDF gives a surprising answer."]},
-    fri:{prompt:"An inverted index inverts what, exactly? Why is this the right abstraction for search?",hardConcept:"Inverted indexes"},
-    sat:{title:"Inverted index v1",desc:"Build an inverted index over a real corpus — pick Project Gutenberg texts or a dump of linguistics papers you've saved. Store postings in SQLite. Support AND/OR/NOT boolean queries.",tasks:["Pick a corpus","Tokenize and build vocabulary","Store postings in SQLite","Implement AND, OR, NOT","Simple CLI query interface"]},
-    sun:{items:["Re-read week's grimoire"],check:["Why is the inverted index inverted?","TF-IDF formula from memory"]}},
-  {theme:"Tolerant retrieval & word2vec",
-    mon:{src:"IIR ch.3–4 (tolerant retrieval, index construction)",focus:"Handling typos and wildcards. Soundex, edit distance, bigram indexes.",link:LINKS.IIR},
-    tue:{src:"SLP3 §6.5–6.7 (PPMI, word2vec intuition)",focus:"Why embeddings capture meaning. The distributional hypothesis.",link:LINKS.SLP3},
-    wed:{title:"Spell-correcting search",tasks:["Describe how a spell-correcting search handles 'elchemy' → 'alchemy'.","Sketch a bigram index for approximate matching.","Explain why Levenshtein alone is not enough at scale."]},
-    thu:{title:"Skip-gram in one paragraph",tasks:["Explain word2vec skip-gram in one paragraph, no math.","Explain negative sampling: why it works.","Predict: will vector(king) - vector(man) + vector(woman) be close to vector(queen)?"]},
-    fri:{prompt:"Why are embeddings magical? What's the key insight?",hardConcept:"Distributional semantics"},
-    sat:{title:"Boolean + Porter stemmer",desc:"Implement the Porter stemmer from scratch (it's rule-based, not ML). Add stemming to your search engine. Wrap the index in a minimal search UI on the alchemy site.",tasks:["Implement Porter stemmer","Integrate into index build","Add stemming to queries","Build a minimal search UI","Deploy"],links:[["Porter stemmer",LINKS.PORTER]]},
-    sun:{items:["Re-read week's grimoire"],check:["Distributional hypothesis, plainly","Three Porter stemmer rules"]}},
-  {theme:"Compression & consolidation",
-    mon:{src:"IIR ch.5 (index compression)",focus:"Gap encoding. Variable-byte encoding. Why compression matters at scale.",link:LINKS.IIR},
-    tue:{src:"Consolidation — re-read your own grimoire on IR",focus:"Identify two things from IR you don't yet deeply understand. Write them down."},
-    wed:{title:"Compress by hand",tasks:["Take a postings list of 10 integers. Apply gap encoding.","Apply variable-byte encoding.","Compare sizes."]},
-    thu:{title:"Review exercises",tasks:["Re-explain the inverted index in two paragraphs.","Re-explain TF-IDF.","Re-explain distributional semantics."]},
-    fri:{prompt:"How much can we compress a postings list? What's the floor?",hardConcept:"Gap and variable-byte encoding"},
-    sat:{title:"TF-IDF ranked retrieval",desc:"Add TF-IDF ranking to your search engine. Same queries, ranked by score. Compare to boolean on the same queries. Post both result sets on alchemy site.",tasks:["Compute TF-IDF scores at query time","Rank results","Compare to boolean on 5 queries","Write up: 'When boolean beats TF-IDF and vice versa'"]},
-    sun:{items:["Re-read week's grimoire"],check:["Variable-byte encoding from memory","Explain your search engine to a non-programmer"]}},
-  {theme:"BM25",
-    mon:{src:"IIR ch.6 (scoring, BM25)",focus:"The BM25 formula and its parameters. What k₁ and b actually do.",link:LINKS.IIR},
-    tue:{src:"Robertson & Zaragoza, The Probabilistic Relevance Framework: BM25 and Beyond",focus:"What problem BM25 solved that TF-IDF didn't.",link:LINKS.BM25},
-    wed:{title:"BM25 by hand",tasks:["Implement BM25 scoring by hand on a toy corpus with 3 docs.","Show the effect of document length normalization.","Compare to TF-IDF on the same docs."]},
-    thu:{title:"Tune BM25",tasks:["Take a small query set.","Tune k₁ ∈ {0.5, 1.2, 2.0} and b ∈ {0.0, 0.75, 1.0}.","Observe what changes."]},
-    fri:{prompt:"BM25 in one paragraph, without looking at the formula.",hardConcept:"BM25 intuition"},
-    sat:{title:"BM25 from scratch",desc:"Implement BM25 from the formula in your engine. Post a head-to-head comparison on alchemy site: boolean vs TF-IDF vs BM25 on the same 5 queries. This is the kind of post that attracts the right people.",tasks:["Implement BM25 with tunable k₁, b","Run head-to-head on 5 queries","Write up results","Publish 'BM25 from Scratch' post","Include a small demo on the site"]},
-    sun:{items:["Re-read week's grimoire","Update /now"],check:["BM25 parameters, their effect","Three ways it beats TF-IDF"]}},
-  {theme:"DDIA start + CS224N",
-    mon:{src:"DDIA ch.1 (reliable, scalable, maintainable applications)",focus:"Defining these terms precisely. Concrete examples for each.",link:LINKS.DDIA},
-    tue:{src:"CS224N lecture 1 (word vectors)",focus:"The distributional hypothesis as engineering, not philosophy.",link:LINKS.CS224N},
-    wed:{title:"Rank your systems",tasks:["Rank three systems you know by reliability, scalability, maintainability.","Defend each ranking in two sentences.","Identify the system that scores worst overall — what would fix it?"]},
-    thu:{title:"Cosine by hand",tasks:["Compute cosine similarity by hand on two short vectors.","Show dot product and norms.","Interpret: high, medium, low similarity — what does each mean?"]},
-    fri:{prompt:"Is 'distributed' always better? When would you choose a single well-tuned node over a cluster?",hardConcept:"What reliability, scalability, maintainability actually mean"},
-    sat:{title:"Skip-gram v1 from scratch",desc:"Implement word2vec skip-gram from scratch on a small corpus (~100K tokens). Train slowly. Observe. Plot loss over epochs. Do not reach for gensim.",tasks:["Build the vocabulary","Implement skip-gram with negative sampling","Train on a small corpus","Save the embeddings","Log loss curve"]},
-    sun:{items:["MONTHLY REVIEW — re-read September grimoire","Write the month-in-review","Update /now for October"],check:["Define reliability, scalability, maintainability with examples","Cosine similarity from memory"],monthly:true}},
-  {theme:"Data models & w2v deep dive",
-    mon:{src:"DDIA ch.2 (data models and query languages)",focus:"Relational, document, graph. What each is good at.",link:LINKS.DDIA},
-    tue:{src:"CS224N lecture 2 (word2vec deep dive)",focus:"Negative sampling. Why it replaces the softmax.",link:LINKS.CS224N},
-    wed:{title:"Three models, one problem",tasks:["Model a small social network in relational, document, and graph.","Write a query for 'friends of friends' in each.","Compare ergonomics and performance intuitions."]},
-    thu:{title:"Negative sampling",tasks:["Explain negative sampling in your own words.","Derive the gradient update for one positive and one negative example.","Why does it approximate the full softmax?"]},
-    fri:{prompt:"Which data model matches which problem? Find a case where document crushes relational, and vice versa.",hardConcept:"When each data model is right"},
-    sat:{title:"Word2vec + PCA visualization",desc:"Continue your skip-gram. Reduce the embedding space to 2D with PCA. Visualize a small vocabulary (~50 words grouped by semantic category) on the alchemy site. Post with commentary.",tasks:["Train w2v on more data (or keep previous)","PCA to 2D","Scatter plot with labels","Host interactive plot on alchemy site","Write up observations"]},
-    sun:{items:["Re-read week's grimoire"],check:["Friends-of-friends in graph query","What negative sampling approximates and why"]}},
-  {theme:"Storage & backprop",
-    mon:{src:"DDIA ch.3 (storage and retrieval)",focus:"LSM-tree vs B-tree trade-offs. Write path vs read path.",link:LINKS.DDIA},
-    tue:{src:"CS224N lecture 3 (backpropagation)",focus:"The chain rule as an algorithm.",link:LINKS.CS224N},
-    wed:{title:"Three storage engines",tasks:["Describe how a hash index, an LSM-tree, and a B-tree each handle a write.","Compare write amplification.","Identify workloads each is best for."]},
-    thu:{title:"Backprop by hand",tasks:["Derive backprop for a 2-layer network by hand.","Show the gradient at each layer.","Identify where the chain rule is applied."]},
-    fri:{prompt:"LSM-trees and B-trees are both sorted structures. Why does the database world have both?",hardConcept:"LSM vs B-tree"},
-    sat:{title:"Toy LSM-tree",desc:"A minimal LSM-tree in ~200 lines of your language of choice. Writes go to an in-memory memtable. When it fills, flush to an SSTable on disk. Reads check memtable then SSTables in order. No compaction yet — next time.",tasks:["Memtable (sorted map)","Flush to sorted file (SSTable)","Read path: memtable then SSTables","Write tests","Post to alchemy site with a short write-up"]},
-    sun:{items:["Re-read week's grimoire"],check:["Write amplification — which engine wins for what?","Backprop for a 2-layer net from memory"]}},
-  {theme:"Encoding & gold set start",
-    mon:{src:"DDIA ch.4 (encoding and evolution)",focus:"Schema evolution as the real problem. JSON, Protobuf, Avro.",link:LINKS.DDIA},
-    tue:{src:"Review CS224N lectures 1–3",focus:"Consolidate word vectors and backprop. Identify what's still hazy."},
-    wed:{title:"Encoding comparison",tasks:["Compare JSON, Protobuf, Avro on readability, schema evolution, size.","For each, identify a case where it's the right choice.","Name a case where schema evolution broke a production system (you can invent it)."]},
-    thu:{title:"Re-derive w2v",tasks:["Re-derive word2vec from memory: objective function, gradient, update rule.","Verify against last week's notes."]},
-    fri:{prompt:"Why does schema evolution matter so much? What breaks when you ignore it?",hardConcept:"Backward and forward compatibility"},
-    sat:{title:"Gold set v1 — five conversations",desc:"Download a public corpus: Switchboard, CallHome, or MultiWOZ. Hand-annotate five conversations for adjacency pairs and repair sequences. This is the seed of your capstone gold set. Boring. Essential. Do not skip.",tasks:["Pick corpus","Read the annotation guidelines from CA literature","Annotate 5 conversations","Store annotations in a consistent format (JSONL)","Commit to capstone repo"],links:[["Switchboard via LDC",LINKS.SWDA]]},
-    sun:{items:["Re-read week's grimoire"],check:["Backward vs forward compatibility","Name the first CA category you had to look up twice"]}},
-  {theme:"Replication + capstone skeleton",
-    mon:{src:"DDIA ch.5 (replication)",focus:"Leader-follower, multi-leader, leaderless. The failure modes of each.",link:LINKS.DDIA},
-    tue:{src:"CS224N lecture 4 (dependency parsing)",focus:"What a parse tree encodes that an n-gram doesn't.",link:LINKS.CS224N},
-    wed:{title:"Leader election",tasks:["Sketch a leader-election protocol on paper.","Identify what breaks under network partition.","Note what split-brain looks like in practice."]},
-    thu:{title:"Parse by hand",tasks:["Parse three sentences into dependency trees by hand.","Identify arcs and labels.","Find a sentence where the parse is ambiguous."]},
-    fri:{prompt:"Replication is about reading or writing? Why?",hardConcept:"Leader election"},
-    sat:{title:"CAPSTONE — walking skeleton part 1",desc:"Start the capstone repo. Define the turn data model: speaker, text, start timestamp, end timestamp, call_id. Write a fake transcript generator that replays your gold-set conversations turn by turn with artificial delays. This is the first code you commit to the capstone — take it seriously.",tasks:["Create capstone repo (private for now)","Define turn schema","Write transcript replayer","Test on one gold-set call","Commit"]},
-    sun:{items:["QUARTERLY CHECKPOINT — re-read October grimoire"],check:["Explain replication, partitioning, and CAP theorem from memory","Write skip-gram pseudocode from memory","Describe your capstone in 3 sentences"],quarterly:true,monthly:true}},
-  {theme:"Partitioning + skeleton 2",
-    mon:{src:"DDIA ch.6 (partitioning)",focus:"Key-range vs hash partitioning. Hot spots.",link:LINKS.DDIA},
-    tue:{src:"CS224N lecture 5 (RNNs, language modeling)",focus:"The vanishing gradient problem.",link:LINKS.CS224N},
-    wed:{title:"Partition a chat app",tasks:["Design a partitioning scheme for a chat app (conversations by user, or by channel).","Identify the hot-spot risk.","Propose a mitigation."]},
-    thu:{title:"Unroll an RNN",tasks:["Unroll an RNN over 3 timesteps on paper.","Identify where gradients can vanish.","Explain why LSTMs help."]},
-    fri:{prompt:"What problem does partitioning solve? What new problems does it introduce?",hardConcept:"Hot spots"},
-    sat:{title:"CAPSTONE — skeleton 2, ingestion",desc:"Hook the transcript replayer to an ingestion pipeline. Tokenize each turn as it arrives. Write enriched turns to SQLite. Batch mode, no UI. Just prove the flow works.",tasks:["Ingestion reads from replayer","Tokenizer runs per turn","Enriched turns written to SQLite","Query them back at the end","Commit"]},
-    sun:{items:["Re-read week's grimoire"],check:["What a hot spot is, concretely","Where RNN gradients vanish"]}},
-  {theme:"Transactions + skeleton 3",
-    mon:{src:"DDIA ch.7 part 1 (transactions, atomicity, isolation basics)",focus:"The four ACID properties, precisely.",link:LINKS.DDIA},
-    tue:{src:"CS224N lecture 6 (language models)",focus:"Teacher forcing.",link:LINKS.CS224N},
-    wed:{title:"ACID counterexamples",tasks:["For each ACID property, name one concrete case that violates it and what goes wrong.","Identify which property is violated most often in practice."]},
-    thu:{title:"Teacher forcing",tasks:["Describe teacher forcing.","Explain why it helps training.","Explain why it creates an exposure bias at inference time."]},
-    fri:{prompt:"Which ACID property is hardest to get right in a distributed system? Defend.",hardConcept:"Isolation vs consistency"},
-    sat:{title:"CAPSTONE — skeleton 3, dialogue acts",desc:"Add a dialogue-act classifier. Use a pre-trained HuggingFace model fine-tuned on SwDA (Switchboard Dialogue Acts) as a starting point. Store the labels on each turn. You are not training today — you are wiring inference into the pipeline.",tasks:["Pick a SwDA-fine-tuned HF model","Inference per turn","Store act label + confidence on turn record","Sanity-check results on your gold set","Commit"]},
-    sun:{items:["Re-read week's grimoire"],check:["ACID with examples for each","What SwDA acts cover"]}},
-  {theme:"Isolation + skeleton 4 (UI)",
-    mon:{src:"DDIA ch.7 part 2 (isolation levels, serializability)",focus:"What each isolation level actually prevents.",link:LINKS.DDIA},
-    tue:{src:"Karpathy makemore part 2",focus:"Bigram and neural bigram models implemented from scratch.",link:LINKS.MAKEMORE},
-    wed:{title:"Anomaly identification",tasks:["Describe dirty read, non-repeatable read, phantom, lost update, read skew, write skew.","For each, name the minimum isolation level that prevents it."]},
-    thu:{title:"Neural bigram by memory",tasks:["Implement a neural bigram from memory in your language of choice.","Train on a toy corpus.","Compare to non-neural bigram."]},
-    fri:{prompt:"Snapshot isolation — what's the magic? How is it implemented under the hood?",hardConcept:"Snapshot isolation via MVCC"},
-    sat:{title:"CAPSTONE — skeleton 4, UI",desc:"Build the first Angular page of the capstone UI. Takes a call_id, fetches turns with labels from SQLite, renders them color-coded by dialogue act. No interactivity yet. Just the read path. Post a 'work in progress' to alchemy site.",tasks:["Angular page with call_id route","API endpoint returning turns","Render as a list, color-coded","Sidebar with basic stats","Deploy locally; screenshot for alchemy site"]},
-    sun:{items:["Re-read week's grimoire"],check:["Isolation levels and what each prevents","Draw your capstone architecture from memory"]}},
-  {theme:"Distributed trouble + Schegloff ch.1",
-    mon:{src:"DDIA ch.8 (the trouble with distributed systems)",focus:"Unreliable clocks. Network partitions. Failure models.",link:LINKS.DDIA},
-    tue:{src:"Schegloff, Sequence Organization in Interaction, ch.1",focus:"Turns as the unit of analysis. Why conversation analysis is its own discipline.",link:LINKS.SCHEGLOFF},
-    wed:{title:"Three failure modes",tasks:["Describe three ways a distributed system can fail from a user's perspective.","For each, name one real incident (you can look these up after writing)."]},
-    thu:{title:"Turn annotation",tasks:["Annotate two conversation turns from your gold set with their sequence position.","Identify the 'floor' and who holds it.","Note what makes a turn 'complete'."]},
-    fri:{prompt:"What is a turn in conversation? How do we know when one ends?",hardConcept:"Turn-taking as a discipline"},
-    sat:{title:"Mini-GPT on Shakespeare",desc:"Implement a mini-GPT from Karpathy's 'Let's build GPT' video. Train on the tiny Shakespeare corpus. Watch the loss go down. Feel the scale difference between n-grams and transformers.",tasks:["Follow the video once; take notes","Implement along","Train on tiny shakespeare","Sample from the model","Note what surprised you"],links:[["Karpathy: Let's build GPT",LINKS.GPT_VIDEO]]},
-    sun:{items:["MONTHLY REVIEW — re-read November grimoire","Write the month-in-review","Update /now"],check:["Three failure modes of distributed systems","What makes a turn complete"],monthly:true}},
-  {theme:"Consensus + adjacency pairs",
-    mon:{src:"DDIA ch.9 (consistency and consensus)",focus:"Linearizability. Why consensus is the center of gravity for hard problems.",link:LINKS.DDIA},
-    tue:{src:"Schegloff ch.2 (adjacency pairs)",focus:"First and second pair parts. The structural expectation built by the first.",link:LINKS.SCHEGLOFF},
-    wed:{title:"Design a linearizable counter",tasks:["Design a linearizable distributed counter.","Identify what breaks under partition.","Name one real system that claims linearizability (is it true?)."]},
-    thu:{title:"Annotate 5 pairs",tasks:["Annotate 5 adjacency pairs from your gold set.","Label first and second parts.","Note dispreferred responses."]},
-    fri:{prompt:"Adjacency pairs — greeting→greeting, question→answer. What linguistic work do they do that a dialogue act label doesn't?",hardConcept:"Adjacency as structural expectation"},
-    sat:{title:"CAPSTONE — adjacency pair detector",desc:"Build a rule-based adjacency pair detector over the dialogue-act labels from skeleton 3. Rules like: if turn N is QUESTION and turn N+1 is STATEMENT, that's a Q→A pair (within k turns). Evaluate against your hand-annotated gold set. Compute precision and recall.",tasks:["Define pair rules in code","Run over gold set","Compute P, R, F1","Identify failure modes","Commit; post a short write-up"]},
-    sun:{items:["Re-read week's grimoire"],check:["Linearizability from memory","Three adjacency pair types"]}},
-  {theme:"Batch & repair — light week",light:true,
-    mon:{src:"DDIA ch.10 (batch processing, MapReduce)",focus:"Data locality. Stage composition. The shape of MapReduce.",link:LINKS.DDIA},
-    tue:{src:"Schegloff ch.3 (repair)",focus:"Types of repair — self-initiated, other-initiated, self-completed, other-completed.",link:LINKS.SCHEGLOFF},
-    wed:{title:"Word count in MapReduce",tasks:["Design a MapReduce for word count on a 1TB corpus.","Identify the shuffle boundary.","Estimate the intermediate data size."]},
-    thu:{title:"Annotate 5 repairs",tasks:["Annotate 5 repair sequences in your gold set.","Classify each by type (self/other initiated, self/other completed).","Note the markers you see."]},
-    fri:{prompt:"Why is repair so frequent in conversation? What does it reveal about cognition and about conversation as a joint activity?",hardConcept:"Repair as collaborative"},
-    sat:{title:"CAPSTONE — repair design",desc:"Design the repair detector on paper. No code yet. Enumerate self-initiated markers ('I mean', 'sorry', 'no, wait'). Enumerate other-initiated (clarification questions). Pseudocode the detection logic. Put the doc in the capstone repo.",tasks:["List self-initiated markers","List other-initiated patterns","Pseudocode the detection","Commit design doc"]},
-    sun:{items:["Re-read week's grimoire"],check:["MapReduce word count from memory","Repair types, named"]}},
-  {theme:"Catch-up week",light:true,
-    mon:{title:"Catch-up Monday",tasks:["Re-read anything from the last two months that didn't fully land.","Do not start anything new."]},
-    tue:{title:"Catch-up Tuesday",tasks:["Review CA concepts.","If anything is missing in your gold set, add it."]},
-    wed:{title:"Catch-up Wednesday",tasks:["Fix any failing tests in your Lox playground.","Fix any broken links on alchemy site."]},
-    thu:{title:"Catch-up Thursday",tasks:["Re-run your skip-gram or BM25; capture fresh outputs.","Take notes on what changed in your understanding since first implementing."]},
-    fri:{prompt:"Free topic. Write about whatever is unresolved in your mind. No pressure to summarize the week.",hardConcept:"Anything"},
-    sat:{title:"CAPSTONE — annotate 10 more",desc:"Annotate 10 more conversations for adjacency pairs and repair. Total gold set now ~15 conversations. This is unsexy work; it is the foundation your evaluations depend on.",tasks:["Annotate 10 conversations","Keep the same format as before","Commit to capstone repo"]},
-    sun:{items:["Re-read December grimoire so far"],check:["Any concept you flagged last week still not clear? Name it and plan a fix."]}},
-  {theme:"Holiday rest",rest:true,
-    mon:{rest:true},tue:{rest:true},wed:{rest:true},thu:{rest:true},fri:{rest:true},sat:{rest:true},sun:{rest:true}},
-  {theme:"Preference + appraisal start",
-    mon:{src:"Schegloff ch.4 (preference)",focus:"Preferred vs dispreferred responses. How dispreferreds are marked.",link:LINKS.SCHEGLOFF},
-    tue:{src:"Martin & White, The Language of Evaluation (Appraisal), intro",focus:"The three domains — affect, judgment, appreciation — and why they matter separately.",link:LINKS.MW},
-    wed:{title:"Identify preference",tasks:["Find 5 preferred responses in your gold set.","Find 5 dispreferred ones.","Note the markers: hesitation, accounts, prefaces."]},
-    thu:{title:"Appraisal tagging by hand",tasks:["Tag 10 words in 3 sentences as affect / judgment / appreciation.","Note disagreements with yourself; rewrite the ambiguous cases."]},
-    fri:{prompt:"What does it mean that some responses are 'preferred'? Preferred by whom? The speaker, the structure, or the culture?",hardConcept:"Preference organization"},
-    sat:{title:"CAPSTONE — repair detector v1",desc:"Implement the repair detector. Start with self-initiated repair markers. Evaluate against your gold set. Iterate: adjust rules, rerun, note what improves.",tasks:["Implement self-repair detection","Run against gold set","Compute P, R, F1","Iterate at least twice","Commit"]},
-    sun:{items:["MONTHLY REVIEW — re-read December grimoire","Write the month-in-review post","Update /now for January"],check:["Preference organization in one paragraph","Three appraisal domains and what each covers"],monthly:true}},
-  {theme:"Expansion & appraisal",
-    mon:{src:"Schegloff ch.5 (sequence expansion)",focus:"Pre-expansion, insert, post-expansion. How conversations grow around their core pairs.",link:LINKS.SCHEGLOFF},
-    tue:{src:"M&W ch.2 (attitude: affect, judgment, appreciation)",focus:"Inscription vs invocation — direct vs implied appraisal.",link:LINKS.MW},
-    wed:{title:"Expansions in context",tasks:["Identify expansions in 3 conversations from your gold set.","Classify each: pre, insert, post.","Note what function each serves."]},
-    thu:{title:"Build a small appraisal lexicon",tasks:["Build a lexicon of 20 affect words, 20 judgment words, 20 appreciation words.","Use your own intuition, not an off-the-shelf list.","Commit to the capstone repo."]},
-    fri:{prompt:"The lexicon I built — what did I learn about how English encodes attitude?",hardConcept:"Implicit vs explicit appraisal"},
-    sat:{title:"CAPSTONE — appraisal tagger",desc:"Build an appraisal tagger using your own lexicon. Tag affect, judgment, and appreciation on your gold set. Compute recall against your hand-tagged subset. This is where the linguistics degree pays rent.",tasks:["Integrate lexicon as a dictionary","Tag each turn","Export per-turn appraisal counts","Evaluate recall on hand-tagged subset","Commit"]},
-    sun:{items:["Re-read week's grimoire"],check:["Pre-expansion vs insert expansion","Five affect words you added to your lexicon"]}},
-  {theme:"Sequences & turn-taking metrics",
-    mon:{src:"Schegloff ch.6–7 (sequences in context)",focus:"The position-sensitivity of meaning. Same words, different work.",link:LINKS.SCHEGLOFF},
-    tue:{src:"M&W ch.3 (engagement, graduation)",focus:"Heteroglossia — speakers positioning against other voices.",link:LINKS.MW},
-    wed:{title:"Position-sensitive meaning",tasks:["Find a turn in your gold set whose meaning depends on sequence position.","Explain how the same words would mean something different elsewhere.","Note what a dialogue-act label alone misses."]},
-    thu:{title:"Hedges and intensifiers",tasks:["Find 5 hedges and 5 intensifiers in your gold set.","Note graduation: amplified vs softened.","Add a graduation tagger to your backlog."]},
-    fri:{prompt:"How does conversation build meaning cumulatively? What does a single turn miss that a sequence captures?",hardConcept:"Position in sequence"},
-    sat:{title:"CAPSTONE — turn-taking metrics",desc:"Compute turn-taking metrics: overlap, gap, turn length distributions, per-speaker. Expose them in the UI as a sidebar. This is the first feature a real supervisor might actually use.",tasks:["Compute overlap between adjacent turns","Compute gap (silence) between turns","Turn length distribution per speaker","Render in UI sidebar","Test on 3 calls"]},
-    sun:{items:["Re-read week's grimoire"],check:["Position-sensitivity with a concrete example","Definitions of overlap and gap"]}},
-  {theme:"CA review + stream processing",
-    mon:{src:"Review all CA material; make a one-page cheat sheet",focus:"Compress Schegloff into one page. If you cannot fit it, you do not yet know it."},
-    tue:{src:"DDIA ch.11 part 1 (stream processing, message brokers)",focus:"Log-based message brokers. Why they're different from traditional queues.",link:LINKS.DDIA},
-    wed:{title:"Full CA analysis of one call",tasks:["Take one gold-set conversation.","Annotate: turns, adjacency pairs, repair, preference, appraisal.","Write a one-paragraph analysis of what the conversation is doing."]},
-    thu:{title:"Kafka vs queue",tasks:["Compare Kafka to a traditional message queue on three axes: durability, reread semantics, partitioning.","Identify one case where each is strictly better."]},
-    fri:{prompt:"Stream processing and conversation analysis are the same problem at different scales. Defend that claim.",hardConcept:"Logs as the primitive"},
-    sat:{title:"CAPSTONE — stitch the UI view",desc:"Stitch everything into one annotated transcript view. Color-code by dialogue act. Mark repair sequences with a subtle underline. Flag appraisal inline. Add a timeline visualization below the transcript: turns as blocks with overlap visible. This is the money shot of the capstone.",tasks:["Combine all annotations on one page","Color-code acts","Mark repairs","Flag appraisal","Timeline with overlap","Polish typography — this is what you'll screenshot"]},
-    sun:{items:["Re-read week's grimoire"],check:["The one-page CA cheat sheet from memory","Why log-based brokers are different"]}},
-  {theme:"DDIA finish + writeup draft",
-    mon:{src:"DDIA ch.12 (the future of data systems)",focus:"The dataflow view. How the chapters connect.",link:LINKS.DDIA},
-    tue:{src:"Review Martin & White Appraisal",focus:"Consolidate. Identify what you still hand-wave about."},
-    wed:{title:"Architecture sketch",tasks:["Sketch an architecture for a real-time user analytics platform using DDIA ch.11–12 patterns.","Identify at least 3 trade-offs you made.","Defend each."]},
-    thu:{title:"Full annotation, one call",tasks:["Annotate one final conversation using all your tools.","Compare this annotation to your first annotation from October.","Identify what you now see that you didn't then."]},
-    fri:{prompt:"What do I actually know about distributed systems now that I didn't in October? What do I still not know?",hardConcept:"What DDIA's chapters add up to"},
-    sat:{title:"CAPSTONE — writeup draft",desc:"Write the technical post draft. What you built. Why. How. What worked. What didn't. What you'd do differently. Aim for 1500–2500 words. Edit next week.",tasks:["Draft 1500-2500 words","Include 2-3 screenshots","Include the architecture diagram","Include honest limitations","Commit"]},
-    sun:{items:["QUARTERLY CHECKPOINT — re-read January grimoire"],check:["Does the capstone work on at least 10 different conversations with visibly correct annotations? If no, February becomes 'polish and ship smaller' rather than 'add streaming.'","The dataflow view in one paragraph"],quarterly:true,monthly:true}},
-  {theme:"6.824 + Redis Streams",
-    mon:{src:"MIT 6.824 lecture 1 (introduction, MapReduce)",focus:"The fault-tolerance abstraction. Why MapReduce was important.",link:LINKS.SIX824},
-    tue:{src:"Re-read DDIA ch.11 with streaming knowledge",focus:"Notice what's clearer this time than it was in January.",link:LINKS.DDIA},
-    wed:{title:"MapReduce fault tolerance",tasks:["Explain MapReduce fault tolerance in one paragraph.","Identify what the master does and what workers do.","Name one modern system that stands on these shoulders."]},
-    thu:{title:"Capstone streaming design",tasks:["Sketch the streaming version of your capstone on paper.","Identify which stages can run independently.","Identify where ordering matters."]},
-    fri:{prompt:"Why does re-reading reveal more than first-reading? What does that say about learning?",hardConcept:"Why re-reads work"},
-    sat:{title:"CAPSTONE — Redis Streams between stages",desc:"Introduce Redis Streams between pipeline stages. Ingestion publishes turns. Enrichment consumes, tokenizes, adds dialogue acts. Discourse analyzer consumes the enriched stream. You are actually streaming now — not batch anymore.",tasks:["Add Redis locally","Replace direct calls with stream publish/consume","Each stage is its own process","Test end-to-end","Commit"]},
-    sun:{items:["Re-read week's grimoire"],check:["MapReduce fault tolerance from memory","Why your pipeline is actually streaming now"]}},
-  {theme:"GFS + backpressure",
-    mon:{src:"MIT 6.824 lecture 2 (GFS)",focus:"The decision to build on unreliable commodity hardware.",link:LINKS.GFS},
-    tue:{src:"6.824 Lab 1 (MapReduce in Go) — setup",focus:"Get Go working. Read the lab spec.",link:LINKS.SIX824},
-    wed:{title:"Single-master GFS",tasks:["Describe GFS's single-master architecture.","Identify why it works despite 'single point of failure' intuitions.","Name the escape hatch (shadow masters)."]},
-    thu:{title:"Start Lab 1",tasks:["Get MapReduce in Go compiling.","Run the provided tests.","Read the worker.go template carefully."]},
-    fri:{prompt:"GFS bet on failures being common. What does that architectural choice buy you, and what does it cost?",hardConcept:"Optimizing for the common case of failure"},
-    sat:{title:"CAPSTONE — backpressure, ordering, idempotency",desc:"Handle the hard parts of streaming. Backpressure when a consumer is slow. Ordering guarantees within a conversation. Idempotency when a message is processed twice. Write up what breaks and why in your grimoire.",tasks:["Consumer backpressure via stream acks","Partition by call_id for ordering","Idempotent handlers (dedup via turn_id)","Chaos test: kill a stage mid-run","Write up what broke"]},
-    sun:{items:["Re-read week's grimoire"],check:["Single-master GFS, defended","Three problems streaming introduced"]}},
-  {theme:"Primary-backup + UI polish",
-    mon:{src:"6.824 lecture 3 (primary-backup replication)",focus:"Split-brain and how to avoid it.",link:LINKS.SIX824},
-    tue:{src:"6.824 Lab 1 continues",focus:"Make progress. The lab is not the point; the feel for Go concurrency is.",link:LINKS.SIX824},
-    wed:{title:"Split-brain",tasks:["Explain split-brain in one paragraph.","Describe two approaches to avoid it (lease, quorum).","Identify why CAP theorem makes this hard."]},
-    thu:{title:"Lab 1 edge cases",tasks:["Write test cases for Lab 1's edge cases.","Worker crash. Coordinator crash. Slow worker.","Run them."]},
-    fri:{prompt:"What does my capstone still not do well? What would a v2 fix first?",hardConcept:"Knowing what you haven't fixed"},
-    sat:{title:"CAPSTONE — polish the query UI",desc:"Polish the supervisor-facing UI. Add a call picker. Filters by repair rate, appraisal density, turn count. Make it something a real supervisor would open on Monday morning. This is what distinguishes a prototype from a portfolio piece.",tasks:["Call picker with search","Filter bar: repair rate, appraisal density, duration","Sortable columns","Empty states","Keyboard navigation","Screenshot for the post"]},
-    sun:{items:["Re-read week's grimoire"],check:["Split-brain with two mitigations","Three UI polish items that moved the needle"]}},
-  {theme:"Ship",
-    mon:{title:"Write — the post draft",tasks:["Take last month's draft. Open it cold.","Rewrite the lead. Make it about what's new, not what's competent.","Cut 20%."]},
-    tue:{title:"Edit",tasks:["Cut another 15%.","Strengthen the honest-limitations section.","Add one story — the moment the pipeline first held together."]},
-    wed:{title:"Final polish",tasks:["Final UI polish.","Deploy the capstone to a stable URL.","Make sure the alchemy site links to it."]},
-    thu:{title:"Post prep",tasks:["Write the README.","Choose a license (MIT is fine).","Write reproduction instructions for someone cloning the repo.","Pre-write the HN, r/LanguageTechnology, and Slack announcements."]},
-    fri:{prompt:"Ten months. What do I know now that I didn't in May? What's next?",hardConcept:"The path ahead"},
-    sat:{title:"SHIP",desc:"Today is the day. Public post on the alchemy site. Open-source the capstone repo. Post to HackerNews, r/LanguageTechnology, ACL's industry Slack. Tweet it if you tweet. Show it to Craig. You did the work. Let it leave the building.",tasks:["Publish the post","Make the repo public","Submit to HN","Post to r/LanguageTechnology","Post to ACL industry Slack","Tell Craig"]},
-    sun:{items:["FINAL — re-read all 43 weekly grimoire entries","Publish the 'After February' post: what comes next","Close the grimoire. Open a new one. Tomorrow is the start of year two."],check:["What is the second deep domain?","Who is the mentor?","What is the next capstone?"],final:true}}
-];
-</script>
+    <section>
+      <h4>Your grimoire</h4>
+      <p>Read every entry in one place. Edit, export individual entries as markdown, attach live URLs to shipped projects.</p>
+      <a href="./grimoire.html" class="btn btn-primary">Open the grimoire →</a>
+    </section>
+
+    <section>
+      <h4>Backup</h4>
+      <p>Every Sunday during your weekly review, export a backup and commit it to your private <code style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);">grimoire</code> repo. That makes this work truly durable.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="exportBtn">Export backup (.json)</button>
+        <button class="btn" id="importBtn">Import from file</button>
+        <input type="file" id="importFile" style="display:none" accept=".json,application/json">
+      </div>
+      <div class="modal-flash" id="modalFlash"></div>
+    </section>
+
+    <section>
+      <h4>Reset</h4>
+      <p>Wipe everything and start over. You'll be asked to confirm twice. Export a backup first — there is no undo.</p>
+      <button class="btn btn-danger" id="resetBtn">Clear all data</button>
+    </section>
+  </div>
+</div>
+
+<script src="./data.js"></script>
 <script id="appScript">
 const DAY_MS = 86400000;
 const START = new Date(Date.UTC(2026, 4, 4));       // first Monday
@@ -1001,6 +690,83 @@ document.getElementById('themeToggle').addEventListener('click',function(){
   var next=cur==='light'?'dark':'light';
   document.documentElement.setAttribute('data-theme',next);
   try{localStorage.setItem('alchemy:v1:theme',next);}catch(e){}
+});
+
+// ── SETTINGS MODAL ──────────────────────────────────
+var settingsModal=document.getElementById('settingsModal');
+var modalFlash=document.getElementById('modalFlash');
+function flashMsg(msg,ms){
+  modalFlash.textContent=msg;
+  modalFlash.classList.add('show');
+  if(ms) setTimeout(function(){modalFlash.classList.remove('show');},ms);
+}
+function openSettings(){settingsModal.classList.add('active');document.body.style.overflow='hidden';}
+function closeSettings(){settingsModal.classList.remove('active');document.body.style.overflow='';}
+document.getElementById('settingsBtn').addEventListener('click',openSettings);
+document.getElementById('settingsClose').addEventListener('click',closeSettings);
+settingsModal.addEventListener('click',function(e){if(e.target===settingsModal)closeSettings();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&settingsModal.classList.contains('active'))closeSettings();});
+
+// Export
+document.getElementById('exportBtn').addEventListener('click',function(){
+  var data={};
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i);
+    if(k&&k.indexOf('alchemy:v1:')===0) data[k]=localStorage.getItem(k);
+  }
+  var payload={exportedAt:new Date().toISOString(),version:1,count:Object.keys(data).length,entries:data};
+  var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  var today=new Date().toISOString().slice(0,10);
+  a.href=url; a.download='alchemy-backup-'+today+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  flashMsg('Exported '+payload.count+' entries. Commit the file to your private grimoire repo.',6000);
+});
+
+// Import
+document.getElementById('importBtn').addEventListener('click',function(){
+  document.getElementById('importFile').click();
+});
+document.getElementById('importFile').addEventListener('change',function(e){
+  var file=e.target.files[0];
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      var parsed=JSON.parse(ev.target.result);
+      var entries=parsed.entries||parsed; // support raw dumps too
+      var keys=Object.keys(entries).filter(function(k){return k.indexOf('alchemy:v1:')===0;});
+      if(!keys.length){flashMsg('No valid alchemy entries found in that file.',4000);return;}
+      if(!confirm('Import '+keys.length+' entries? Entries with the same date will be overwritten.')){return;}
+      keys.forEach(function(k){
+        var v=entries[k];
+        if(typeof v!=='string') v=JSON.stringify(v);
+        localStorage.setItem(k,v);
+      });
+      flashMsg('Imported '+keys.length+' entries. Reloading…',2000);
+      setTimeout(function(){window.location.reload();},1500);
+    }catch(err){
+      flashMsg('Import failed: '+err.message,5000);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value='';
+});
+
+// Reset
+document.getElementById('resetBtn').addEventListener('click',function(){
+  if(!confirm('This will delete all your progress, notes, and grimoire entries from this browser. Continue?')) return;
+  if(!confirm('Last chance. Are you sure you exported a backup?')) return;
+  var keys=[];
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i);
+    if(k&&k.indexOf('alchemy:v1:')===0&&k!=='alchemy:v1:theme') keys.push(k);
+  }
+  keys.forEach(function(k){localStorage.removeItem(k);});
+  flashMsg('Deleted '+keys.length+' entries. Reloading…',2000);
+  setTimeout(function(){window.location.reload();},1500);
 });
 
 document.getElementById('jumpToday').addEventListener('click',function(){selectDay(todayISO());});

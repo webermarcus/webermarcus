@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>※ The Grimoire · Marcus Weber</title>
+<meta name="robots" content="noindex, nofollow">
+<script>
+(function(){try{var s=localStorage.getItem('alchemy:v1:theme');var p=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',s||(p?'dark':'light'));}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231A1814'/%3E%3Ctext x='50' y='74' font-size='70' text-anchor='middle' fill='%23B8421C' font-family='Georgia,serif' font-style='italic'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2EDE2;--bg-soft:#E8DFD0;--bg-softer:#EFE8DB;--ink:#1A1814;--ink-soft:#3A3530;--muted:#7C7166;--accent:#B8421C;--accent-soft:#D4663A;--accent-pale:rgba(184,66,28,0.08);--line:rgba(26,24,20,0.13);--line-soft:rgba(26,24,20,0.07);--grain-opacity:0.035;--grain-blend:multiply}
+[data-theme="dark"]{--bg:#1A1814;--bg-soft:#2B2720;--bg-softer:#22201B;--ink:#F2EDE2;--ink-soft:#D4CDBD;--muted:#8F8579;--accent:#D4663A;--accent-soft:#E89670;--accent-pale:rgba(212,102,58,0.12);--line:rgba(242,237,226,0.13);--line-soft:rgba(242,237,226,0.07);--grain-opacity:0.05;--grain-blend:screen}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:400;font-size:15px;line-height:1.55;min-height:100vh;position:relative;transition:background .4s ease,color .4s ease}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:var(--grain-opacity);background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:var(--grain-blend)}
+nav{position:sticky;top:0;background:var(--bg);border-bottom:.5px solid var(--line);padding:14px 28px;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:background .4s,border-color .4s}
+.logo{font-family:'Instrument Serif',serif;font-size:19px;font-style:italic;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo::before{content:'※ ';color:var(--accent);font-style:normal}
+.nav-mid{flex:1;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;text-align:center}
+.nav-mid em{color:var(--accent);font-style:italic;text-transform:none;letter-spacing:0}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-link{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.06em;padding:8px 12px;border-radius:4px;transition:color .2s,background .2s}
+.nav-link:hover{color:var(--ink);background:var(--bg-soft)}
+.nav-link.active{color:var(--accent)}
+.theme-toggle{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:background .2s,transform .4s cubic-bezier(.2,.8,.2,1)}
+.theme-toggle:hover{background:var(--bg-soft);transform:rotate(180deg)}
+.theme-toggle svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+[data-theme="light"] .theme-toggle .sun{display:none}
+[data-theme="dark"] .theme-toggle .moon{display:none}
+
+.hero{padding:42px 28px 12px;max-width:1400px;margin:0 auto}
+.hero .tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.hero .tag::before{content:'';width:24px;height:1px;background:var(--accent)}
+.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,54px);line-height:1;letter-spacing:-.02em;font-weight:400;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero-meta{display:flex;gap:22px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.06em;flex-wrap:wrap;margin-bottom:18px}
+.hero-meta span strong{color:var(--accent);font-weight:500}
+.search-wrap{position:relative;max-width:480px;margin-top:6px}
+.search-wrap input{width:100%;font-family:'Manrope',sans-serif;font-size:14px;padding:10px 14px 10px 38px;border:.5px solid var(--line);background:var(--bg-softer);color:var(--ink);border-radius:999px;transition:border-color .15s,background .15s}
+.search-wrap input:focus{outline:none;border-color:var(--accent);background:var(--bg)}
+.search-wrap::before{content:'';position:absolute;top:50%;left:14px;transform:translateY(-50%);width:12px;height:12px;border:1.5px solid var(--muted);border-radius:50%}
+.search-wrap::after{content:'';position:absolute;top:calc(50% + 3px);left:23px;width:6px;height:1.5px;background:var(--muted);transform:rotate(45deg);transform-origin:left}
+
+main{max-width:1400px;margin:0 auto;padding:24px 28px 80px;display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.3fr);gap:36px;align-items:flex-start}
+@media (max-width:1024px){main{grid-template-columns:1fr;gap:32px}}
+
+.entry-list{min-width:0;max-height:calc(100vh - 100px);overflow-y:auto;padding-right:4px}
+@media (max-width:1024px){.entry-list{max-height:none}}
+.entry-list-head{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:.5px solid var(--line);display:flex;justify-content:space-between}
+.entry-card{display:block;padding:14px 16px;border:.5px solid var(--line);border-radius:3px;margin-bottom:6px;cursor:pointer;transition:background .15s,border-color .15s;background:var(--bg)}
+.entry-card:hover{background:var(--bg-soft);border-color:var(--ink-soft)}
+.entry-card.selected{border:1px solid var(--accent);background:var(--accent-pale)}
+.entry-card .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.entry-card .wk{font-family:'Instrument Serif',serif;font-size:14px;font-style:italic;color:var(--accent)}
+.entry-card .dt{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.04em}
+.entry-card .theme{font-family:'Instrument Serif',serif;font-size:18px;line-height:1.2;color:var(--ink);margin-bottom:6px}
+.entry-card.selected .theme{color:var(--ink)}
+.entry-card .excerpt{font-size:13px;color:var(--ink-soft);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px;min-height:2.8em}
+.entry-card .excerpt.empty{font-style:italic;color:var(--muted);min-height:0}
+.entry-card .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.04em;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.entry-card .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.entry-card .dot.written{background:var(--accent)}
+.entry-card .dot.draft{background:var(--muted)}
+.entry-card .dot.empty{background:transparent;border:1px solid var(--muted)}
+.entry-card.rest{opacity:.5;cursor:default;background:var(--bg-soft);border-style:dashed}
+.entry-card.rest:hover{background:var(--bg-soft);border-color:var(--line)}
+
+.entry-pane{background:var(--bg);border:.5px solid var(--line);border-radius:4px;position:sticky;top:76px;max-height:calc(100vh - 100px);overflow-y:auto}
+@media (max-width:1024px){.entry-pane{position:relative;top:0;max-height:none}}
+.pane-head{padding:24px 28px 18px;border-bottom:.5px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2}
+.pane-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pane-meta em{color:var(--accent);font-style:normal}
+.pane-title{font-family:'Instrument Serif',serif;font-size:32px;line-height:1.1;letter-spacing:-.02em;color:var(--ink);font-weight:400}
+.pane-title em{font-style:italic;color:var(--accent)}
+.pane-date{font-family:'Instrument Serif',serif;font-size:18px;font-style:italic;color:var(--ink-soft);margin-top:4px}
+
+.pane-body{padding:24px 28px 32px}
+.pane-body>section{margin-bottom:26px}
+.pane-body>section:last-child{margin-bottom:0}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:'';width:16px;height:1px;background:var(--accent)}
+.prompt-card{padding:16px 18px;background:var(--bg-soft);border-left:2px solid var(--accent);border-radius:0 3px 3px 0;margin-bottom:6px}
+.prompt-card .q{font-family:'Instrument Serif',serif;font-size:20px;line-height:1.3;color:var(--ink);font-style:italic;margin-bottom:8px}
+.prompt-card .focus{font-size:13px;color:var(--ink-soft);line-height:1.55;font-family:'JetBrains Mono',monospace;letter-spacing:.02em}
+.prompt-card .focus em{color:var(--accent);font-style:normal;font-weight:500}
+
+textarea.grimoire{width:100%;font-family:'Instrument Serif',serif;font-size:19px;line-height:1.6;padding:16px 18px;border:.5px solid var(--line);background:var(--bg-softer);color:var(--ink);border-radius:3px;resize:vertical;min-height:360px;transition:border-color .15s,background .15s}
+textarea.grimoire:focus{outline:none;border-color:var(--accent);background:var(--bg)}
+textarea.grimoire.readonly{background:var(--bg-soft);min-height:200px;cursor:default}
+.field-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:.04em}
+.field-meta .saved{color:var(--accent)}
+
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{font-family:'Manrope',sans-serif;font-weight:500;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;border:.5px solid var(--line);background:transparent;color:var(--ink);transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--bg-soft)}
+.btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.btn.primary:hover{background:var(--ink);border-color:var(--ink)}
+.btn.ghost{border:none;color:var(--muted)}
+.btn.ghost:hover{background:transparent;color:var(--accent)}
+
+.project-card{padding:18px 20px;background:var(--bg-soft);border-radius:3px;border:.5px solid var(--line)}
+.project-card .p-kind{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.project-card .p-title{font-family:'Instrument Serif',serif;font-size:22px;font-style:italic;color:var(--ink);line-height:1.15;margin-bottom:8px}
+.project-card .p-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:12px}
+.url-field{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:.5px dashed var(--line)}
+.url-field label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;flex-shrink:0}
+.url-field input{flex:1;font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 10px;border:.5px solid var(--line);background:var(--bg-softer);color:var(--ink);border-radius:3px;transition:border-color .15s}
+.url-field input:focus{outline:none;border-color:var(--accent);background:var(--bg)}
+.url-field .visit{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);padding:6px 10px;border:.5px solid var(--accent);border-radius:999px;text-decoration:none;letter-spacing:.06em}
+.url-field .visit:hover{background:var(--accent);color:var(--bg)}
+.url-field .visit.hidden{display:none}
+
+.blank-state{text-align:center;padding:80px 28px;color:var(--muted)}
+.blank-state h3{font-family:'Instrument Serif',serif;font-size:30px;font-style:italic;color:var(--ink);font-weight:400;margin-bottom:10px}
+.blank-state p{font-size:14px;line-height:1.6;max-width:400px;margin:0 auto}
+
+.rest-block{padding:28px 24px;text-align:center;background:var(--bg-soft);border-radius:3px}
+.rest-block h3{font-family:'Instrument Serif',serif;font-size:24px;font-style:italic;color:var(--accent);font-weight:400;margin-bottom:8px}
+.rest-block p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;max-width:380px;margin:0 auto}
+
+@media (max-width:700px){
+  nav{padding:12px 16px}.nav-mid{display:none}
+  .hero{padding:28px 16px 10px}main{padding:16px 16px 80px}
+  .hero-meta{gap:12px}.pane-head{padding:18px 20px 14px}.pane-body{padding:18px 20px 24px}
+  .entry-card{padding:12px 14px}.pane-title{font-size:26px}
+  textarea.grimoire{font-size:17px;padding:14px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Alchemy</a>
+  <div class="nav-mid" id="navMid">§ The <em>grimoire</em></div>
+  <div class="nav-right">
+    <a href="./index.html" class="nav-link">Calendar</a>
+    <a href="./grimoire.html" class="nav-link active">Grimoire</a>
+    <a href="/" class="nav-link">Portfolio</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="6.34" y1="17.66" x2="4.93" y2="19.07"/><line x1="19.07" y1="4.93" x2="17.66" y2="6.34"/></svg>
+    </button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="tag">Private · Forty-two entries · Ten months</div>
+  <h1>Your <em>grimoire</em>.</h1>
+  <div class="hero-meta">
+    <span><strong id="mEntries">—</strong> written</span>
+    <span><strong id="mWords">—</strong> words</span>
+    <span><strong id="mLatest">—</strong> latest</span>
+    <span><strong id="mShipped">—</strong> projects shipped</span>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Search entries by text, week, or theme…" autocomplete="off">
+  </div>
+</header>
+
+<main>
+  <div class="entry-list" id="entryList"></div>
+  <div class="entry-pane" id="entryPane">
+    <div class="blank-state"><h3>Pick an entry.</h3><p>Each Friday of the plan has a grimoire prompt. Click any week on the left to read, edit, or start writing.</p></div>
+  </div>
+</main>
+
+<script src="./data.js"></script>
+<script>
+const DAY_MS=86400000;
+const START=new Date(Date.UTC(2026,4,4));
+const MONTH_NAMES=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function pad(n){return String(n).padStart(2,'0');}
+function toISO(d){return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDate());}
+function parseISO(s){var p=s.split('-').map(Number);return new Date(Date.UTC(p[0],p[1]-1,p[2]));}
+function addDays(d,n){var out=new Date(d);out.setUTCDate(out.getUTCDate()+n);return out;}
+function formatLong(d){
+  var wk=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  return wk[d.getUTCDay()]+', '+MONTH_NAMES[d.getUTCMonth()]+' '+d.getUTCDate()+', '+d.getUTCFullYear();
+}
+function formatShort(d){return MONTH_NAMES[d.getUTCMonth()].slice(0,3)+' '+d.getUTCDate()+', '+d.getUTCFullYear();}
+function timeAgo(ts){
+  var s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return 'just now';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  var days=Math.floor(s/86400);
+  if(days<30) return days+'d ago';
+  return Math.floor(days/30)+'mo ago';
+}
+function wordCount(s){if(!s)return 0;var m=s.trim().match(/\S+/g);return m?m.length:0;}
+function escapeHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── STORAGE (same schema as calendar) ──────────────
+function getDay(iso){try{return JSON.parse(localStorage.getItem('alchemy:v1:day:'+iso)||'null');}catch(e){return null;}}
+function setDay(iso,data){data.savedAt=Date.now();try{localStorage.setItem('alchemy:v1:day:'+iso,JSON.stringify(data));}catch(e){}}
+function dayOrDefault(iso){return getDay(iso)||{done:false,notes:"",grimoire:"",tasksDone:[],reviewDone:[],quarterlyPass:null,liveURL:"",savedAt:null};}
+
+// ── BUILD ENTRY INDEX ──────────────────────────────
+// Each entry = one Friday of the plan. 43 weeks total; week 34 is rest (no entry).
+function buildEntries(){
+  var out=[];
+  for(var w=0;w<WEEKS.length;w++){
+    var week=WEEKS[w];
+    if(week.rest) continue;
+    var friday=addDays(START,w*7+4);
+    var saturday=addDays(START,w*7+5);
+    var friISO=toISO(friday);
+    var satISO=toISO(saturday);
+    var friState=dayOrDefault(friISO);
+    var satState=dayOrDefault(satISO);
+    out.push({
+      weekNum:w+1,
+      weekIdx:w,
+      theme:week.theme,
+      friISO:friISO,
+      satISO:satISO,
+      fridayDate:friday,
+      prompt:week.fri&&week.fri.prompt?week.fri.prompt:'',
+      hardConcept:week.fri&&week.fri.hardConcept?week.fri.hardConcept:'',
+      content:friState.grimoire||'',
+      savedAt:friState.savedAt,
+      project:week.sat||null,
+      liveURL:satState.liveURL||'',
+      shipped:!!satState.done
+    });
+  }
+  return out;
+}
+
+// ── RENDER SIDEBAR ─────────────────────────────────
+var ENTRIES=buildEntries();
+var selectedIdx=null;
+var filterText='';
+
+function renderList(){
+  var list=document.getElementById('entryList');
+  var filtered=ENTRIES.map(function(e,i){return {e:e,i:i};}).filter(function(x){
+    if(!filterText) return true;
+    var f=filterText.toLowerCase();
+    return (x.e.theme||'').toLowerCase().indexOf(f)>=0
+      || (x.e.prompt||'').toLowerCase().indexOf(f)>=0
+      || (x.e.content||'').toLowerCase().indexOf(f)>=0
+      || ('week '+x.e.weekNum).toLowerCase().indexOf(f)>=0;
+  });
+  var head='<div class="entry-list-head"><span>'+filtered.length+' entries</span><span>newest first</span></div>';
+  var cards=filtered.slice().reverse().map(function(x){
+    var e=x.e;
+    var wc=wordCount(e.content);
+    var status=wc>=200?'written':(wc>0?'draft':'empty');
+    var excerpt=e.content?e.content.trim().slice(0,160):(e.prompt?'"'+e.prompt.slice(0,100)+(e.prompt.length>100?'…':'')+'"':'');
+    var excerptCls=e.content?'':'empty';
+    if(!e.content) excerpt='— unwritten —';
+    var savedLabel=e.savedAt?timeAgo(e.savedAt):'—';
+    return '<div class="entry-card'+(x.i===selectedIdx?' selected':'')+'" data-idx="'+x.i+'">'
+      +'<div class="top"><span class="wk">Week '+e.weekNum+'</span><span class="dt">'+formatShort(e.fridayDate)+'</span></div>'
+      +'<div class="theme">'+escapeHtml(e.theme)+'</div>'
+      +'<div class="excerpt '+excerptCls+'">'+escapeHtml(excerpt)+'</div>'
+      +'<div class="meta"><span><span class="dot '+status+'"></span>'+(wc||'0')+' words</span><span>'+savedLabel+'</span></div>'
+      +'</div>';
+  }).join('');
+  list.innerHTML=head+cards;
+  list.querySelectorAll('.entry-card[data-idx]').forEach(function(el){
+    el.addEventListener('click',function(){selectEntry(parseInt(el.getAttribute('data-idx'),10));});
+  });
+}
+
+// ── RENDER PANE ────────────────────────────────────
+function selectEntry(i){
+  selectedIdx=i;
+  window.location.hash='w'+(i+1);
+  renderList();
+  renderPane();
+  if(window.innerWidth<=1024){
+    setTimeout(function(){document.getElementById('entryPane').scrollIntoView({behavior:'smooth',block:'start'});},50);
+  }
+}
+
+function renderPane(){
+  var pane=document.getElementById('entryPane');
+  if(selectedIdx===null){
+    pane.innerHTML='<div class="blank-state"><h3>Pick an entry.</h3><p>Each Friday of the plan has a grimoire prompt. Click any week on the left to read, edit, or start writing.</p></div>';
+    return;
+  }
+  var e=ENTRIES[selectedIdx];
+  var wc=wordCount(e.content);
+  var savedLabel=e.savedAt?('saved '+timeAgo(e.savedAt)):'not saved yet';
+
+  var html='';
+  html+='<div class="pane-head">';
+  html+='<div class="pane-meta"><span>Week <em>'+e.weekNum+'</em> · Friday</span><span>'+escapeHtml(formatShort(e.fridayDate))+'</span></div>';
+  html+='<div class="pane-title">'+escapeHtml(e.theme)+'</div>';
+  html+='<div class="pane-date">'+escapeHtml(formatLong(e.fridayDate))+'</div>';
+  html+='</div>';
+  html+='<div class="pane-body">';
+
+  if(e.prompt){
+    html+='<section><div class="section-label">The prompt</div>';
+    html+='<div class="prompt-card"><div class="q">'+escapeHtml(e.prompt)+'</div>';
+    if(e.hardConcept) html+='<div class="focus"><em>Focus:</em> '+escapeHtml(e.hardConcept)+'</div>';
+    html+='</div></section>';
+  }
+
+  html+='<section><div class="section-label">Your entry</div>';
+  html+='<textarea class="grimoire" id="entryText" placeholder="In your own words. No quotes, no pasting. Aim for 250 words; more is welcome.">'+escapeHtml(e.content)+'</textarea>';
+  html+='<div class="field-meta"><span id="wcOut">'+wc+' words</span><span class="saved" id="savedLbl">'+savedLabel+'</span></div>';
+  html+='<div class="action-row">';
+  html+='<button class="btn primary" id="dlBtn">Download .md</button>';
+  html+='<button class="btn" id="copyBtn">Copy as markdown</button>';
+  html+='<a class="btn ghost" href="./index.html#'+e.friISO+'">Open in calendar →</a>';
+  html+='</div></section>';
+
+  if(e.project){
+    html+='<section><div class="section-label">This week\'s project</div>';
+    html+='<div class="project-card">';
+    html+='<div class="p-kind">Saturday · Week '+e.weekNum+'</div>';
+    html+='<div class="p-title">'+escapeHtml(e.project.title||'Project')+'</div>';
+    if(e.project.desc) html+='<div class="p-desc">'+escapeHtml(e.project.desc)+'</div>';
+    html+='<div class="url-field">';
+    html+='<label>Live URL</label>';
+    html+='<input type="text" id="liveURL" placeholder="https://your-project.example.com" value="'+escapeHtml(e.liveURL)+'">';
+    var hidden=e.liveURL?'':' hidden';
+    html+='<a class="visit'+hidden+'" id="visitLink" href="'+escapeHtml(e.liveURL)+'" target="_blank" rel="noopener">Visit ↗</a>';
+    html+='</div></div></section>';
+  }
+
+  html+='</div>';
+  pane.innerHTML=html;
+
+  attachPaneHandlers(e);
+}
+
+function attachPaneHandlers(entry){
+  var textField=document.getElementById('entryText');
+  var wcOut=document.getElementById('wcOut');
+  var savedLbl=document.getElementById('savedLbl');
+  var saveTimer=null;
+  function debSave(fn){clearTimeout(saveTimer);saveTimer=setTimeout(fn,400);}
+  textField.addEventListener('input',function(){
+    var txt=textField.value;
+    wcOut.textContent=wordCount(txt)+' words';
+    debSave(function(){
+      var s=dayOrDefault(entry.friISO);
+      s.grimoire=txt;
+      setDay(entry.friISO,s);
+      entry.content=txt;
+      entry.savedAt=s.savedAt;
+      savedLbl.textContent='saved just now';
+      // Update sidebar excerpt without full re-render
+      var card=document.querySelector('.entry-card[data-idx="'+selectedIdx+'"]');
+      if(card){
+        var preview=txt.trim().slice(0,160);
+        var exEl=card.querySelector('.excerpt');
+        if(exEl){exEl.textContent=preview||'— unwritten —';exEl.className='excerpt'+(txt?'':' empty');}
+        var metaEls=card.querySelectorAll('.meta span');
+        if(metaEls[0]){
+          var wc=wordCount(txt);
+          var dotCls=wc>=200?'written':(wc>0?'draft':'empty');
+          metaEls[0].innerHTML='<span class="dot '+dotCls+'"></span>'+(wc||'0')+' words';
+        }
+        if(metaEls[1]) metaEls[1].textContent='just now';
+      }
+      renderHeroStats();
+    });
+  });
+
+  document.getElementById('dlBtn').addEventListener('click',function(){
+    var md=toMarkdown(entry,textField.value);
+    var blob=new Blob([md],{type:'text/markdown'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='grimoire-week-'+pad(entry.weekNum)+'-'+entry.friISO+'.md';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('copyBtn').addEventListener('click',function(){
+    var md=toMarkdown(entry,textField.value);
+    navigator.clipboard.writeText(md).then(function(){
+      var b=document.getElementById('copyBtn');
+      var orig=b.textContent;
+      b.textContent='Copied!';
+      setTimeout(function(){b.textContent=orig;},1500);
+    }).catch(function(){alert('Copy failed. Select and copy manually.');});
+  });
+
+  var liveURL=document.getElementById('liveURL');
+  var visitLink=document.getElementById('visitLink');
+  if(liveURL){
+    liveURL.addEventListener('input',function(){
+      var url=liveURL.value.trim();
+      debSave(function(){
+        var s=dayOrDefault(entry.satISO);
+        s.liveURL=url;
+        setDay(entry.satISO,s);
+        entry.liveURL=url;
+        if(visitLink){
+          visitLink.href=url;
+          visitLink.classList.toggle('hidden',!url);
+        }
+      });
+    });
+  }
+}
+
+function toMarkdown(e,content){
+  var lines=[];
+  lines.push('# Week '+e.weekNum+' — '+e.theme);
+  lines.push('');
+  lines.push('**Date:** '+formatLong(e.fridayDate));
+  if(e.hardConcept) lines.push('**Focus:** '+e.hardConcept);
+  lines.push('');
+  if(e.prompt){
+    lines.push('## Prompt');
+    lines.push('');
+    lines.push('> '+e.prompt);
+    lines.push('');
+  }
+  lines.push('## Entry');
+  lines.push('');
+  lines.push(content||'_(unwritten)_');
+  lines.push('');
+  if(e.project){
+    lines.push('## This week\'s project');
+    lines.push('');
+    lines.push('**'+e.project.title+'**');
+    if(e.project.desc){lines.push('');lines.push(e.project.desc);}
+    if(e.liveURL){lines.push('');lines.push('Live: '+e.liveURL);}
+    lines.push('');
+  }
+  lines.push('---');
+  lines.push('_Exported '+new Date().toISOString()+'_');
+  return lines.join('\n');
+}
+
+// ── HERO STATS ─────────────────────────────────────
+function renderHeroStats(){
+  ENTRIES=buildEntries(); // refresh from storage
+  var written=0, totalWords=0, latest=null, shipped=0;
+  ENTRIES.forEach(function(e){
+    var wc=wordCount(e.content);
+    if(wc>=50) written++;
+    totalWords+=wc;
+    if(e.savedAt&&(!latest||e.savedAt>latest.savedAt)) latest=e;
+    if(e.shipped) shipped++;
+  });
+  document.getElementById('mEntries').textContent=written||'0';
+  document.getElementById('mWords').textContent=totalWords.toLocaleString();
+  document.getElementById('mLatest').textContent=latest?'W'+latest.weekNum:'—';
+  document.getElementById('mShipped').textContent=shipped||'0';
+}
+
+// ── INTERACTIONS ───────────────────────────────────
+document.getElementById('search').addEventListener('input',function(e){
+  filterText=e.target.value;
+  renderList();
+});
+
+document.getElementById('themeToggle').addEventListener('click',function(){
+  var cur=document.documentElement.getAttribute('data-theme')||'light';
+  var next=cur==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('alchemy:v1:theme',next);}catch(e){}
+});
+
+window.addEventListener('hashchange',function(){
+  var h=window.location.hash.replace('#','');
+  var m=/^w(\d+)$/.exec(h);
+  if(m){
+    var wk=parseInt(m[1],10);
+    var idx=ENTRIES.findIndex(function(e){return e.weekNum===wk;});
+    if(idx>=0&&idx!==selectedIdx) selectEntry(idx);
+  }
+});
+
+// ── INIT ───────────────────────────────────────────
+renderHeroStats();
+renderList();
+// Select from URL hash if present, otherwise latest-written entry, otherwise first
+var initHash=window.location.hash.replace('#','');
+var hashMatch=/^w(\d+)$/.exec(initHash);
+if(hashMatch){
+  var idx=ENTRIES.findIndex(function(e){return e.weekNum===parseInt(hashMatch[1],10);});
+  if(idx>=0) selectEntry(idx);
+}
+</script>
+</body>
+</html>
