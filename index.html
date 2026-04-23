@@ -1382,6 +1382,22 @@
   </div>
 
   <script>
+    // ── ALCHEMY EASTER EGG ────────────────────────────
+    (function () {
+      const target = 'alchemy', dest = '/alchemy';
+      let buffer = '', lastKeyTime = 0;
+      document.addEventListener('keydown', (e) => {
+        const t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+        if (e.key.length !== 1 || e.metaKey || e.ctrlKey || e.altKey) return;
+        const now = Date.now();
+        if (now - lastKeyTime > 1500) buffer = '';
+        lastKeyTime = now;
+        buffer = (buffer + e.key.toLowerCase()).slice(-target.length);
+        if (buffer === target) { buffer = ''; window.location.href = dest; }
+      });
+    })();
+
     // ── THEME SYSTEM ──────────────────────────────────
     const THEME_KEY = 'theme-preference';
     const htmlEl = document.documentElement;
