@@ -139,8 +139,8 @@ textarea.grimoire.readonly{background:var(--bg-soft);min-height:200px;cursor:def
   <a href="/" class="logo">Alchemy</a>
   <div class="nav-mid" id="navMid">§ The <em>grimoire</em></div>
   <div class="nav-right">
-    <a href="./index.html" class="nav-link">Calendar</a>
-    <a href="./grimoire.html" class="nav-link active">Grimoire</a>
+    <a href="/alchemy/" class="nav-link">Calendar</a>
+    <a href="/alchemy/grimoire.html" class="nav-link active">Grimoire</a>
     <a href="/" class="nav-link">Portfolio</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
       <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -170,7 +170,7 @@ textarea.grimoire.readonly{background:var(--bg-soft);min-height:200px;cursor:def
   </div>
 </main>
 
-<script src="./data.js"></script>
+<script src="/alchemy/data.js"></script>
 <script>
 const DAY_MS=86400000;
 const START=new Date(Date.UTC(2026,4,4));
@@ -312,7 +312,7 @@ function renderPane(){
   html+='<div class="action-row">';
   html+='<button class="btn primary" id="dlBtn">Download .md</button>';
   html+='<button class="btn" id="copyBtn">Copy as markdown</button>';
-  html+='<a class="btn ghost" href="./index.html#'+e.friISO+'">Open in calendar →</a>';
+  html+='<a class="btn ghost" href="/alchemy/#'+e.friISO+'">Open in calendar →</a>';
   html+='</div></section>';
 
   if(e.project){
